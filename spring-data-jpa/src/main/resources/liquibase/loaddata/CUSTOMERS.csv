@@ -1,0 +1,101 @@
+CUSTOMER_ID|CUSTOMER_FIRST_NAME|CUSTOMER_MIDDLE_NAME|CUSTOMER_LAST_NAME|GENDER|EMAIL_ADDRESS|PHONE_NUMBER|ADDRESS_DETAILS
+1|Quentin|Brandon|Stout|0|tristique.senectus.et@dolorsit.edu|(016977) 7773|794-6546 Dis Street
+2|Skyler|Dieter|Padilla|1|gravida.sagittis.Duis@loremtristique.edu|0334 001 0304|Ap #521-172 Quis, Road
+3|Sacha|Heidi|Gallagher|1|diam@molestiearcuSed.org|076 8865 5613|Ap #891-4507 Dictum Road
+4|Minerva|Stacy|Gray|0|elit.Aliquam.auctor@eu.org|0500 595273|780-3351 Arcu St.
+5|Zeph|Noelle|Salazar|0|Cras.vehicula@non.com|(0151) 856 3455|8104 Pellentesque Avenue
+6|Hop|Malik|Buchanan|1|risus.at.fringilla@idmollis.ca|(023) 6021 1906|P.O. Box 728, 4374 Pede. St.
+7|Nasim|Damon|Caldwell|0|egestas.nunc@habitantmorbitristique.org|056 4168 5556|Ap #493-2343 Ornare Street
+8|Gareth|Geoffrey|Ellis|1|sit@incursuset.net|0956 318 0954|Ap #393-1453 Imperdiet Avenue
+9|Dylan|Alma|Russo|1|aliquet.lobortis.nisi@mauriserateget.com|07624 783211|P.O. Box 807, 8724 Etiam Street
+10|Emery|Eugenia|Montgomery|1|nibh.Phasellus.nulla@actellusSuspendisse.com|0500 119161|884-6980 Eu St.
+11|Baxter|Katelyn|Flowers|0|tempus@massaSuspendisseeleifend.net|070 9909 3148|8407 Eu Road
+12|Amethyst|Aspen|Estes|1|tristique.pharetra@duiquisaccumsan.edu|07320 379591|P.O. Box 591, 1057 Cursus, Ave
+13|Winter|Sylvester|Avila|1|at@tristique.org|0920 547 5118|Ap #105-2342 Sollicitudin St.
+14|Kasimir|Nina|Yang|1|Nullam.feugiat.placerat@pedeSuspendisse.org|0500 460215|9229 Id, Av.
+15|Stewart|Lillith|Wong|0|Sed@pede.edu|056 2514 7891|P.O. Box 139, 3136 Egestas St.
+16|Wesley|Nehru|Berger|0|erat.volutpat.Nulla@Proin.com|(024) 8544 0172|401 Vestibulum Ave
+17|Julian|Ali|Walls|0|eu.tellus@aliquetmetus.co.uk|076 5221 8955|Ap #875-9903 Nullam Street
+18|Aurelia|Brenden|Kirby|1|at.libero@justositamet.net|(023) 1760 4028|3886 Mauris Av.
+19|Rae|Clarke|Oneill|0|sit@commodo.co.uk|(017175) 44118|Ap #465-7516 Integer Road
+20|Armand|Helen|Ashley|1|Phasellus.vitae.mauris@Suspendisse.org|0848 715 5000|6665 A Road
+21|Uriel|Leslie|Contreras|1|iaculis.aliquet.diam@idante.net|070 7858 4883|Ap #742-5952 Augue, Road
+22|Basil|Colin|Whitley|0|ipsum.Curabitur@dolorDonecfringilla.com|(0113) 236 1499|Ap #397-7117 Egestas. St.
+23|Ryan|Leah|Lowery|1|aliquam.enim@dictumeu.org|0845 46 44|P.O. Box 499, 932 Metus. St.
+24|Jessica|Hollee|Bolton|1|pede.sagittis.augue@ipsumleo.ca|0500 707990|P.O. Box 614, 8716 Sem St.
+25|Callie|Kristen|Duke|0|netus.et.malesuada@faucibus.edu|(0131) 421 0674|344-9319 Enim, Avenue
+26|Rowan|Zoe|Beard|0|tellus.eu.augue@Nullam.net|(0191) 944 5251|8339 Nec, Rd.
+27|Kim|Ignatius|Brewer|0|posuere@augueporttitor.com|(0181) 500 2975|Ap #366-6196 Imperdiet, Avenue
+28|Katelyn|Cruz|Walters|0|metus.Aliquam.erat@Aliquamnecenim.net|(01874) 498029|P.O. Box 544, 7136 Phasellus Ave
+29|Keelie|Blaine|Hooper|0|enim.diam.vel@nislsem.com|0800 778881|P.O. Box 971, 1186 Facilisis Street
+30|Ryder|Rose|Mccray|0|at@variusultricesmauris.com|(016977) 8682|Ap #960-811 Amet Ave
+31|Tiger|Amaya|Spencer|0|lorem.auctor.quis@arcuVivamussit.ca|(0117) 207 0222|P.O. Box 118, 9537 Leo, St.
+32|Willa|Ignacia|Barrett|1|nostra@necurna.edu|0800 1111|Ap #870-9233 Pellentesque, Rd.
+33|Autumn|Xenos|Stone|1|Morbi.metus@Sed.co.uk|0500 570176|506-5528 Sed Av.
+34|Magee|Axel|Austin|1|Sed@aliquet.net|(0115) 350 9881|Ap #530-7956 Tristique Ave
+35|Leroy|Eric|Zamora|0|libero.nec.ligula@Vestibulumante.co.uk|0845 46 47|8540 Risus. Ave
+36|Kameko|Jamal|Arnold|0|dolor@orci.ca|056 9440 4485|7217 Nunc Ave
+37|Karina|Vera|Raymond|1|metus@urnaconvallis.ca|056 3573 0978|4351 Metus Road
+38|Lyle|Kathleen|Adams|0|porttitor.eros.nec@tortor.co.uk|(020) 9514 9279|P.O. Box 372, 5371 Orci. Av.
+39|Dillon|Velma|Workman|0|gravida.sagittis@aliquetmolestietellus.net|0905 994 4983|Ap #390-2109 Sed Rd.
+40|Tashya|Forrest|Durham|1|arcu@fringilla.org|07284 878093|P.O. Box 634, 4813 Id, St.
+41|Elmo|Ursula|Rosa|0|vestibulum.massa@musProin.org|0895 034 2984|Ap #908-745 Elit. Rd.
+42|Jorden|Julie|Navarro|0|a@semper.ca|070 1764 9910|9050 Mauris. Rd.
+43|Branden|Flavia|Burnett|1|tempor@turpis.edu|(022) 4083 3556|280-7701 Aliquet. Street
+44|Chadwick|Ivy|Burch|0|Etiam.gravida@ipsum.edu|0500 942534|P.O. Box 723, 3561 Fermentum St.
+45|Zenia|Mikayla|Compton|0|neque@Aliquam.net|07047 619624|443 Dictum St.
+46|Barclay|Wylie|Pollard|1|quis.diam.luctus@lacusNullatincidunt.com|(01514) 739273|Ap #113-2541 Nascetur Ave
+47|Orlando|Ingrid|Hurley|0|neque@elementumloremut.com|055 7341 5294|P.O. Box 395, 5393 Rutrum Rd.
+48|Karleigh|Bevis|Poole|1|erat.Etiam.vestibulum@primis.org|(0121) 449 8943|Ap #238-8072 Sed Rd.
+49|Cathleen|Martha|Haney|1|ultricies@egestasadui.ca|0837 942 7139|399-9468 Nulla Street
+50|Shaine|Brent|Chandler|1|mattis.ornare@nuncrisus.co.uk|(020) 6677 2309|9082 Est Ave
+51|Jamalia|Mercedes|Cantu|1|convallis@sapiengravidanon.ca|(021) 6526 5740|Ap #735-6667 Morbi Rd.
+52|Ursula|Dennis|Welch|1|mi.lacinia@pharetraNam.co.uk|0800 070463|Ap #118-8676 Quam. Road
+53|Sylvia|Evangeline|Higgins|1|tristique@nec.com|0800 887 8792|5635 Urna. St.
+54|Anika|Erica|Stout|1|sed.turpis@blandit.edu|0814 180 5631|P.O. Box 756, 8997 Phasellus Rd.
+55|Bevis|Jonah|Baker|0|velit.Cras.lorem@blandit.ca|070 9037 9792|Ap #997-7206 Ipsum Street
+56|Ferdinand|Dahlia|Ferrell|0|eget@hymenaeosMaurisut.co.uk|0800 248 5589|Ap #766-6666 Senectus St.
+57|Lillith|Edan|Harding|1|urna@feugiatplaceratvelit.org|(016977) 6923|Ap #472-2465 At, Avenue
+58|Cullen|Todd|Fulton|1|Aliquam.ultrices.iaculis@condimentumegetvolutpat.co.uk|0845 46 40|534-4419 Velit. Av.
+59|Dustin|Shelley|Hale|0|nibh.Aliquam.ornare@acmattis.edu|076 1640 4913|Ap #186-2894 Inceptos St.
+60|Jerry|Dylan|Nash|0|tincidunt.congue.turpis@Nunclectuspede.edu|056 0527 5254|2849 Libero Road
+61|Mariam|Macaulay|Keller|0|quam.elementum.at@sempertellusid.ca|(0151) 321 8953|P.O. Box 885, 1333 Venenatis Rd.
+62|Fatima|Marny|Clarke|1|Aenean.eget.metus@at.co.uk|0500 282859|Ap #370-2312 Molestie Ave
+63|Riley|Vernon|Howell|1|euismod@sagittisfelisDonec.net|056 2051 1499|6444 Lectus Ave
+64|Amos|Zenaida|Valenzuela|0|cursus.purus@aliquet.co.uk|055 6505 2442|5549 Laoreet, St.
+65|Kendall|Desirae|Pollard|0|mattis.semper@non.ca|(0111) 934 1683|Ap #660-2023 Tristique Ave
+66|Yeo|Brianna|Bradley|0|pretium@vulputateposuerevulputate.edu|055 9593 2010|8360 Odio St.
+67|Anastasia|Nina|Waters|0|lectus.a.sollicitudin@arcuetpede.edu|(01755) 373986|P.O. Box 838, 3435 Amet Avenue
+68|Eric|Jeanette|Whitfield|1|nec@quis.net|(017471) 97726|909-3848 Odio, St.
+69|Grant|Sybil|Ruiz|1|neque@nisl.co.uk|07624 225194|Ap #576-7872 Scelerisque Street
+70|Sophia|Sade|Hall|1|massa.Quisque.porttitor@feugiatSednec.co.uk|(016977) 6861|2249 Id, Rd.
+71|Kellie|Megan|Neal|0|Nullam@orciDonecnibh.ca|(026) 0463 1823|544-2565 Mauris Av.
+72|Nola|Elmo|Poole|1|tellus@acturpis.edu|0906 924 3032|135-9565 Mi Street
+73|Echo|Cade|Mejia|0|Duis@Donec.com|0837 199 7881|965-8546 Quisque Av.
+74|Reece|Buckminster|Chase|1|urna.convallis.erat@diamDuismi.edu|0965 459 5445|3562 Metus. Av.
+75|Pandora|Whoopi|Reynolds|1|leo@odioEtiam.net|070 9612 4432|615-3922 Donec Road
+76|Quemby|Rylee|Peters|0|enim@orciconsectetuer.net|0982 360 1458|P.O. Box 655, 5099 Adipiscing St.
+77|Quynn|Price|Burns|0|feugiat.non@aliquet.com|0800 139442|377-1891 Dignissim Street
+78|Hoyt|Dora|Romero|0|non.vestibulum.nec@rhoncusNullamvelit.edu|076 5449 1536|Ap #642-2909 Vulputate, St.
+79|Jesse|Aaron|Frank|0|faucibus.id.libero@egestas.ca|(016977) 7096|P.O. Box 105, 5556 Mi Rd.
+80|Indira|Blythe|Harrison|0|vulputate@non.com|0500 029513|602-9571 Aliquam St.
+81|Carson|Nayda|Deleon|0|euismod.ac.fermentum@fringillaDonec.edu|(029) 6403 2259|267-2169 Ante St.
+82|Guinevere|Clark|Foreman|0|et.arcu@disparturient.ca|0800 201454|843-3296 Ullamcorper Av.
+83|Avram|Josephine|Hobbs|0|tempor@maurisidsapien.co.uk|(01937) 88372|P.O. Box 272, 6681 Rutrum Av.
+84|Colt|Melissa|Hendricks|0|ante.dictum@dictumeu.net|0814 432 0670|P.O. Box 917, 9551 Lacinia. Avenue
+85|Sade|Moana|Mendez|0|Duis@maurisa.edu|(01649) 161071|Ap #715-6036 Ut Rd.
+86|Flavia|James|Leblanc|1|vestibulum.nec@non.com|070 1766 1617|Ap #503-2927 Auctor Street
+87|Tarik|Madeson|Dyer|0|lorem.ac@Quisquefringillaeuismod.net|07624 208952|888-8042 Erat Rd.
+88|Bell|Ethan|Terry|0|dapibus.id.blandit@scelerisqueloremipsum.co.uk|0500 039407|Ap #609-6669 Vulputate, St.
+89|Zeus|Brenden|Grant|0|magna@idmagna.ca|(01489) 02172|907 Dolor. Ave
+90|Liberty|Jacob|Mcguire|0|Proin.sed@sagittis.net|(027) 5759 2781|1401 Augue Ave
+91|Kiayada|Owen|Snow|0|In@magnamalesuada.ca|(016910) 16859|Ap #488-615 Faucibus Avenue
+92|Maile|Jonas|Luna|1|tincidunt.aliquam.arcu@Craseu.net|070 2277 4082|Ap #725-3443 Mus. Rd.
+93|Jordan|Alyssa|Brock|0|nulla@luctusetultrices.com|0361 752 1907|3017 Dapibus St.
+94|Gabriel|Deacon|Ashley|1|magnis.dis@dictumcursusNunc.ca|(016977) 0417|Ap #316-116 Quisque Rd.
+95|Imani|Stella|Juarez|1|ac@etcommodoat.com|0800 077 1201|6700 Nec Ave
+96|Carly|Asher|Waters|0|eu.placerat.eget@tempor.org|056 4592 8251|Ap #990-1069 In St.
+97|Tad|Melanie|Slater|1|sapien@tellus.com|(026) 3135 2213|991-2912 Ornare Ave
+98|Kadeem|Claire|Shelton|0|amet.consectetuer.adipiscing@augueacipsum.ca|(01613) 028927|325-7492 Ut Av.
+99|Slade|Dorothy|Massey|0|et.magnis.dis@consequatnec.net|07624 908218|2087 Donec St.
+100|Wallace|Channing|Conway|0|vel.mauris@Maurisquisturpis.co.uk|0337 183 8886|P.O. Box 108, 5363 Convallis, Rd.

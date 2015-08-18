@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+ <changeSet id="changelog-2015-08-17-init" author="gerard.ribas">
+
+  <createTable tableName="PRODUCT_CATEGORIES">
+   <column name="PRODUCT_TYPE_CODE" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_PRODUCT_CATEGORIES" />
+   </column>
+   <column name="PRODUCT_TYPE_DESCRIPTION" type="VARCHAR(255)">
+    <constraints nullable="false" />
+   </column>
+   <column name="VAT_RATING" type="decimal(5,2)">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="PRODUCTS">
+   <column name="PRODUCT_ID" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_PRODUCTS" />
+   </column>
+   <column name="PARENT_PRODUCT_ID" type="bigint">
+    <constraints foreignKeyName="FK_PRODUCTS_1" referencedTableName="PRODUCTS" referencedColumnNames="PRODUCT_ID" />
+   </column>
+   <column name="PRODUCT_TYPE_CODE" type="bigint">
+    <constraints foreignKeyName="FK_PRODUCTS_2" referencedTableName="PRODUCT_CATEGORIES"
+     referencedColumnNames="PRODUCT_TYPE_CODE" />
+   </column>
+   <column name="PRODUCT_NAME" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+   <column name="PRODUCT_PRICE" type="currency">
+    <constraints nullable="false" />
+   </column>
+   <column name="PRODUCT_COLOR" type="varchar(50)"></column>
+   <column name="PRODUCT_SIZE" type="varchar(50)"></column>
+   <column name="PRODUCT_DESCRIPTION" type="varchar(500)"></column>
+  </createTable>
+
+  <createTable tableName="CUSTOMERS">
+   <column name="CUSTOMER_ID" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_CUSTOMERS" />
+   </column>
+   <column name="CUSTOMER_FIRST_NAME" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+   <column name="CUSTOMER_MIDDLE_NAME" type="varchar(255)"></column>
+   <column name="CUSTOMER_LAST_NAME" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+   <column name="GENDER" type="integer">
+    <constraints nullable="false" />
+   </column>
+   <column name="EMAIL_ADDRESS" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+   <column name="PHONE_NUMBER" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+   <column name="ADDRESS_DETAILS" type="varchar(1000)">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="ACCOUNTS">
+   <column name="ACCOUNT_ID" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_ACCOUNTS" />
+   </column>
+   <column name="CUSTOMER_ID" type="bigint">
+    <constraints foreignKeyName="FK_ACCOUNTS_1" referencedTableName="CUSTOMERS" referencedColumnNames="CUSTOMER_ID"
+     nullable="false" />
+   </column>
+   <column name="DATE_ACCOUNT_OPENED" type="datetime">
+    <constraints nullable="false" />
+   </column>
+   <column name="ACCOUNT_NAME" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="ORDERS">
+   <column name="ORDER_ID" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_ORDERS" />
+   </column>
+   <column name="CUSTOMER_ID" type="bigint">
+    <constraints foreignKeyName="FK_ORDERS_1" referencedTableName="CUSTOMERS" referencedColumnNames="CUSTOMER_ID"
+     nullable="false" />
+   </column>
+   <column name="DATE_ORDER_PLACED" type="datetime">
+    <constraints nullable="false" />
+   </column>
+   <column name="TOTAL_AMOUNT" type="currency">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="ORDER_ITEMS">
+   <column name="ORDER_ITEM_ID" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_ORDER_ITEMS" />
+   </column>
+   <column name="ORDER_ID" type="bigint">
+    <constraints foreignKeyName="FK_ORDER_ITEMS_1" referencedTableName="ORDERS" referencedColumnNames="ORDER_ID"
+     nullable="false" />
+   </column>
+   <column name="PRODUCT_ID" type="bigint">
+    <constraints foreignKeyName="FK_ORDER_ITEMS_2" referencedTableName="PRODUCTS" referencedColumnNames="PRODUCT_ID"
+     nullable="false" />
+   </column>
+   <column name="PRODUCT_QUANTITY" type="bigint">
+    <constraints nullable="false" />
+   </column>
+   <column name="ORDER_ITEM_COST" type="currency">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="INVOICES">
+   <column name="INVOICE_NUMBER" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_INVOICES" />
+   </column>
+   <column name="ORDER_ID" type="bigint">
+    <constraints foreignKeyName="FK_INVOICES_1" referencedTableName="ORDERS" referencedColumnNames="ORDER_ID"
+     nullable="false" />
+   </column>
+   <column name="INVOICE_DATE" type="datetime">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="INVOICE_LINE_ITEMS">
+   <column name="ORDER_ITEM_ID" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_INVOICE_LINE_ITEMS" foreignKeyName="FK_INVOICE_LINE_ITEMS_1"
+     referencedTableName="ORDER_ITEMS" referencedColumnNames="ORDER_ITEM_ID" />
+   </column>
+   <column name="INVOICE_NUMBER" type="bigint">
+    <constraints foreignKeyName="FK_INVOICE_LINE_ITEMS_2" referencedTableName="INVOICES"
+     referencedColumnNames="INVOICE_NUMBER" nullable="false" />
+   </column>
+   <column name="PRODUCT_ID" type="bigint">
+    <constraints foreignKeyName="FK_INVOICE_LINE_ITEMS_3" referencedTableName="PRODUCTS"
+     referencedColumnNames="PRODUCT_ID" nullable="false" />
+   </column>
+   <column name="PRODUCT_TITLE" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+   <column name="PRODUCT_QUANTITY" type="bigint">
+    <constraints nullable="false" />
+   </column>
+   <column name="PRODUCT_PRICE" type="currency">
+    <constraints nullable="false" />
+   </column>
+   <column name="DERIVED_PRODUCT_COST" type="currency">
+    <constraints nullable="false" />
+   </column>
+   <column name="DERIVED_VAT_PAYABLE" type="currency">
+    <constraints nullable="false" />
+   </column>
+   <column name="DERIVED_TOTAL_COST" type="currency">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="TRANSACTION_TYPES">
+   <column name="TRANSACTION_TYPE_CODE" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_TRANSACTION_TYPES" />
+   </column>
+   <column name="TRANSACTION_TYPE_DESCRIPTION" type="varchar(255)">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+
+  <createTable tableName="FINANCIAL_TRANSACTIONS">
+   <column name="TRANSACTION_ID" autoIncrement="true" type="bigint">
+    <constraints primaryKey="true" primaryKeyName="PK_FINANCIAL_TRANSACTIONS" />
+   </column>
+   <column name="ACCOUNT_ID" type="bigint">
+    <constraints foreignKeyName="FK_FINANCIAL_TRANSACTIONS_1" referencedTableName="ACCOUNTS"
+     referencedColumnNames="ACCOUNT_ID" nullable="false" />
+   </column>
+   <column name="INVOICE_NUMBER" type="bigint">
+    <constraints foreignKeyName="FK_FINANCIAL_TRANSACTIONS_2" referencedTableName="INVOICES"
+     referencedColumnNames="INVOICE_NUMBER" nullable="false" />
+   </column>
+   <column name="TRANSACTION_TYPE_CODE" type="bigint">
+    <constraints foreignKeyName="FK_FINANCIAL_TRANSACTIONS_3" referencedTableName="TRANSACTION_TYPES"
+     referencedColumnNames="TRANSACTION_TYPE_CODE" nullable="false" />
+   </column>
+   <column name="TRANSACTION_DATE" type="datetime">
+    <constraints nullable="false" />
+   </column>
+   <column name="TRANSACTION_AMOUNT" type="currency">
+    <constraints nullable="false" />
+   </column>
+  </createTable>
+ </changeSet>
+ 
+ <changeSet id="changelog-2015-08-17-data" author="gerard.ribas">
+ 	<loadData tableName="CUSTOMERS" file="liquibase/loaddata/CUSTOMERS.csv" separator="|" />
+ 	<loadData tableName="ACCOUNTS" file="liquibase/loaddata/ACCOUNTS.csv" separator="|" />
+ 	<loadData tableName="PRODUCT_CATEGORIES" file="liquibase/loaddata/PRODUCT_CATEGORIES.csv" separator="|" /> 	
+ 	<loadData tableName="TRANSACTION_TYPES" file="liquibase/loaddata/TRANSACTION_TYPES.csv" separator="|" />
+ 	<loadData tableName="PRODUCTS" file="liquibase/loaddata/PRODUCTS.csv" separator="|" />
+ 	<loadData tableName="ORDERS" file="liquibase/loaddata/ORDERS.csv" separator="|" />
+ 	<loadData tableName="ORDER_ITEMS" file="liquibase/loaddata/ORDER_ITEMS.csv" separator="|" />
+ 	<loadData tableName="INVOICES" file="liquibase/loaddata/INVOICES.csv" separator="|" />
+ 	<loadData tableName="INVOICE_LINE_ITEMS" file="liquibase/loaddata/INVOICE_LINE_ITEMS.csv" separator="|" />
+ 	<loadData tableName="FINANCIAL_TRANSACTIONS" file="liquibase/loaddata/FINANCIAL_TRANSACTIONS.csv" separator="|" />
+ </changeSet>
+  
+</databaseChangeLog>
