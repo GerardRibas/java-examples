@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import cat.grc.spring.data.entity.Customer;
 import liquibase.integration.spring.SpringLiquibase;
 
 /**
@@ -97,7 +96,7 @@ public class EntityManagerConfiguration {
       JpaVendorAdapter jpaVendorAdapter) {
     LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
     factory.setDataSource(dataSource);
-    factory.setPackagesToScan(Customer.class.getPackage().getName());
+    factory.setPackagesToScan("cat.grc.spring.data.entity");
     factory.setJpaVendorAdapter(jpaVendorAdapter);
 
     Properties jpaProperties = new Properties();

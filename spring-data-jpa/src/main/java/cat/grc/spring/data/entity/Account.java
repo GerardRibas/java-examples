@@ -40,6 +40,18 @@ public class Account implements Serializable {
 
   private Collection<FinancialTransaction> transactions;
 
+  public Account() {
+
+  }
+
+  public Account(Long id, Customer customer, Date opened, String name) {
+    super();
+    this.id = id;
+    this.customer = customer;
+    this.opened = opened;
+    this.name = name;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ACCOUNT_ID")
