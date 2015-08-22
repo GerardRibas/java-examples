@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import cat.grc.spring.data.dto.ProductCategoryDto;
@@ -46,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
    * @see cat.grc.spring.data.service.ProductService#findAllCategories(int, int)
    */
   @Override
+  @Transactional(readOnly = true)
   public Collection<ProductCategoryDto> findAllCategories(int page, int size) {
     LOGGER.debug("Finding product categories by page={} and size={}", page, size);
     Pageable pageable = new PageRequest(page, size);
@@ -60,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
    * @see cat.grc.spring.data.service.ProductService#findCategoryById(java.lang.Long)
    */
   @Override
+  @Transactional(readOnly = true)
   public ProductCategoryDto findCategoryById(Long id) {
     LOGGER.debug("Finding category by id={}", id);
     Assert.notNull(id);
@@ -79,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
    * ProductCategoryDto)
    */
   @Override
+  @Transactional
   public ProductCategoryDto addCategory(ProductCategoryDto category) {
     LOGGER.debug("Adding new product category {}", category);
     Assert.notNull(category);
@@ -99,6 +103,7 @@ public class ProductServiceImpl implements ProductService {
    * ProductCategoryDto)
    */
   @Override
+  @Transactional
   public ProductCategoryDto updateCategory(ProductCategoryDto category) {
     LOGGER.debug("Updating product category {}", category);
     Assert.notNull(category);
@@ -113,6 +118,7 @@ public class ProductServiceImpl implements ProductService {
    * @see cat.grc.spring.data.service.ProductService#deleteCategory(java.lang.Long)
    */
   @Override
+  @Transactional
   public void deleteCategory(Long id) {
     LOGGER.debug("Deleting product category by id={}", id);
     productCategoryMustExists(id);
@@ -125,6 +131,7 @@ public class ProductServiceImpl implements ProductService {
    * @see cat.grc.spring.data.service.ProductService#findAllProducts(int, int)
    */
   @Override
+  @Transactional(readOnly = true)
   public Collection<ProductDto> findAllProducts(int page, int size) {
     LOGGER.debug("Finding products by page={} and size={}", page, size);
     Pageable pageable = new PageRequest(page, size);
@@ -140,6 +147,7 @@ public class ProductServiceImpl implements ProductService {
    * int)
    */
   @Override
+  @Transactional(readOnly = true)
   public Collection<ProductDto> findAllProductsInCategory(Long categoryId, int page, int size) {
     LOGGER.debug("Finding products by page={} and size={}", page, size);
     Pageable pageable = new PageRequest(page, size);
@@ -154,6 +162,7 @@ public class ProductServiceImpl implements ProductService {
    * @see cat.grc.spring.data.service.ProductService#findProductById(java.lang.Long)
    */
   @Override
+  @Transactional(readOnly = true)
   public ProductDto findProductById(Long id) {
     LOGGER.debug("Finding product by id={}", id);
     Assert.notNull(id);
@@ -172,6 +181,7 @@ public class ProductServiceImpl implements ProductService {
    * @see cat.grc.spring.data.service.ProductService#addProduct(cat.grc.spring.data.dto.ProductDto)
    */
   @Override
+  @Transactional
   public ProductDto addProduct(ProductDto product) {
     LOGGER.debug("Adding new product {}", product);
     Assert.notNull(product);
@@ -192,6 +202,7 @@ public class ProductServiceImpl implements ProductService {
    * cat.grc.spring.data.service.ProductService#updateProduct(cat.grc.spring.data.dto.ProductDto)
    */
   @Override
+  @Transactional
   public ProductDto updateProduct(ProductDto product) {
     LOGGER.debug("Updating product {}", product);
     Assert.notNull(product);
@@ -206,6 +217,7 @@ public class ProductServiceImpl implements ProductService {
    * @see cat.grc.spring.data.service.ProductService#deleteProduct(java.lang.Long)
    */
   @Override
+  @Transactional
   public void deleteProduct(Long id) {
     LOGGER.debug("Deleting product by id={}", id);
     productMustExists(id);
