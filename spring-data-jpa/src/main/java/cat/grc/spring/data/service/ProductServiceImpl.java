@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,8 +24,6 @@ import cat.grc.spring.data.entity.Product;
 import cat.grc.spring.data.entity.ProductCategory;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
-import cat.grc.spring.data.mapper.ProductCategoryMapper;
-import cat.grc.spring.data.mapper.ProductMapper;
 import cat.grc.spring.data.repository.ProductCategoryRepository;
 import cat.grc.spring.data.repository.ProductRepository;
 
@@ -41,6 +40,8 @@ public class ProductServiceImpl implements ProductService {
 
   private ProductRepository productRepository;
 
+  private ModelMapper modelMapper;
+
   /*
    * (non-Javadoc)
    * 
@@ -52,8 +53,8 @@ public class ProductServiceImpl implements ProductService {
     LOGGER.debug("Finding product categories by page={} and size={}", page, size);
     Pageable pageable = new PageRequest(page, size);
     Page<ProductCategory> productCategoryPage = productCategoryRepository.findAll(pageable);
-    return productCategoryPage.getContent().stream().map(category -> ProductCategoryMapper.toDto(category))
-        .collect(Collectors.toList());
+    return productCategoryPage.getContent().stream()
+        .map(category -> modelMapper.map(category, ProductCategoryDto.class)).collect(Collectors.toList());
   }
 
   /*
@@ -72,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
       LOGGER.warn(msg);
       throw new ResourceNotFoundException(msg);
     }
-    return ProductCategoryMapper.toDto(entity);
+    return modelMapper.map(entity, ProductCategoryDto.class);
   }
 
   /*
@@ -92,8 +93,9 @@ public class ProductServiceImpl implements ProductService {
       LOGGER.warn(msg);
       throw new ResourceAlreadyExistsException(msg);
     }
-    ProductCategory entity = productCategoryRepository.save(ProductCategoryMapper.toEntity(category));
-    return ProductCategoryMapper.toDto(entity);
+
+    ProductCategory entity = productCategoryRepository.save(modelMapper.map(category, ProductCategory.class));
+    return modelMapper.map(entity, ProductCategoryDto.class);
   }
 
   /*
@@ -108,8 +110,8 @@ public class ProductServiceImpl implements ProductService {
     LOGGER.debug("Updating product category {}", category);
     Assert.notNull(category);
     productCategoryMustExists(category.getCode());
-    ProductCategory entity = productCategoryRepository.save(ProductCategoryMapper.toEntity(category));
-    return ProductCategoryMapper.toDto(entity);
+    ProductCategory entity = productCategoryRepository.save(modelMapper.map(category, ProductCategory.class));
+    return modelMapper.map(entity, ProductCategoryDto.class);
   }
 
   /*
@@ -136,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
     LOGGER.debug("Finding products by page={} and size={}", page, size);
     Pageable pageable = new PageRequest(page, size);
     Page<Product> productPage = productRepository.findAll(pageable);
-    return productPage.getContent().stream().map(category -> ProductMapper.toDto(category))
+    return productPage.getContent().stream().map(product -> modelMapper.map(product, ProductDto.class))
         .collect(Collectors.toList());
   }
 
@@ -152,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
     LOGGER.debug("Finding products by page={} and size={}", page, size);
     Pageable pageable = new PageRequest(page, size);
     Page<Product> productPage = productRepository.findByCategory(categoryId, pageable);
-    return productPage.getContent().stream().map(category -> ProductMapper.toDto(category))
+    return productPage.getContent().stream().map(product -> modelMapper.map(product, ProductDto.class))
         .collect(Collectors.toList());
   }
 
@@ -172,7 +174,7 @@ public class ProductServiceImpl implements ProductService {
       LOGGER.warn(msg);
       throw new ResourceNotFoundException(msg);
     }
-    return ProductMapper.toDto(entity);
+    return modelMapper.map(entity, ProductDto.class);
   }
 
   /*
@@ -191,8 +193,8 @@ public class ProductServiceImpl implements ProductService {
       LOGGER.warn(msg);
       throw new ResourceAlreadyExistsException(msg);
     }
-    Product entity = productRepository.save(ProductMapper.toEntity(product));
-    return ProductMapper.toDto(entity);
+    Product entity = productRepository.save(modelMapper.map(product, Product.class));
+    return modelMapper.map(entity, ProductDto.class);
   }
 
   /*
@@ -207,8 +209,8 @@ public class ProductServiceImpl implements ProductService {
     LOGGER.debug("Updating product {}", product);
     Assert.notNull(product);
     productMustExists(product.getId());
-    Product entity = productRepository.save(ProductMapper.toEntity(product));
-    return ProductMapper.toDto(entity);
+    Product entity = productRepository.save(modelMapper.map(product, Product.class));
+    return modelMapper.map(entity, ProductDto.class);
   }
 
   /*
@@ -254,6 +256,11 @@ public class ProductServiceImpl implements ProductService {
   @Resource
   public void setProductRepository(ProductRepository productRepository) {
     this.productRepository = productRepository;
+  }
+
+  @Resource
+  public void setModelMapper(ModelMapper modelMapper) {
+    this.modelMapper = modelMapper;
   }
 
 }

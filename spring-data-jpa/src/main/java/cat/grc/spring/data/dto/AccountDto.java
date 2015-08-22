@@ -15,78 +15,79 @@ import com.google.common.base.Objects;
  */
 public class AccountDto implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private Long id;
-	
-	private Long customer;
+  private Long id;
 
-	private Date opened;
+  private Long customerId;
 
-	private String name;
-	
-	public AccountDto() {
-	
-	}
+  private Date opened;
 
-	public AccountDto(Long id, Long customer, Date opened, String name) {
-		super();
-		this.id = id;
-		this.customer = customer;
-		this.opened = opened;
-		this.name = name;
-	}
+  private String name;
 
-	public Long getId() {
-		return id;
-	}
+  public AccountDto() {
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  }
 
-	public Long getCustomer() {
-		return customer;
-	}
+  public AccountDto(Long id, Long customerId, Date opened, String name) {
+    super();
+    this.id = id;
+    this.customerId = customerId;
+    this.opened = opened;
+    this.name = name;
+  }
 
-	public void setCustomer(Long customer) {
-		this.customer = customer;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public Date getOpened() {
-		return opened;
-	}
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public void setOpened(Date opened) {
-		this.opened = opened;
-	}
+  public Long getCustomerId() {
+    return customerId;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public void setCustomerId(Long customerId) {
+    this.customerId = customerId;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public Date getOpened() {
+    return opened;
+  }
 
-	@Override
-	public final int hashCode() {
-		return Objects.hashCode(id, opened, name);
-	}
+  public void setOpened(Date opened) {
+    this.opened = opened;
+  }
 
-	@Override
-	public final boolean equals(Object object) {
-		if (object instanceof AccountDto) {
-			AccountDto that = (AccountDto) object;
-			return Objects.equal(this.id, that.id) && Objects.equal(this.opened, that.opened)
-					&& Objects.equal(this.name, that.name);
-		}
-		return false;
-	}
+  public String getName() {
+    return name;
+  }
 
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this).add("id", id).add("opened", opened).add("name", name).toString();
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public final int hashCode() {
+    return Objects.hashCode(id, customerId, opened, name);
+  }
+
+  @Override
+  public final boolean equals(Object object) {
+    if (object instanceof AccountDto) {
+      AccountDto that = (AccountDto) object;
+      return Objects.equal(this.id, that.id) && Objects.equal(this.customerId, that.customerId)
+          && Objects.equal(this.opened, that.opened) && Objects.equal(this.name, that.name);
+    }
+    return false;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("id", id).add("customerid", customerId).add("opened", opened)
+        .add("name", name).toString();
+  }
 
 }

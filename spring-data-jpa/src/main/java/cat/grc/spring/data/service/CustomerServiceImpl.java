@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -22,8 +23,6 @@ import cat.grc.spring.data.entity.Account;
 import cat.grc.spring.data.entity.Customer;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
-import cat.grc.spring.data.mapper.AccountMapper;
-import cat.grc.spring.data.mapper.CustomerMapper;
 import cat.grc.spring.data.repository.AccountRepository;
 import cat.grc.spring.data.repository.CustomerRepository;
 
@@ -39,6 +38,8 @@ public class CustomerServiceImpl implements CustomerService {
 
   private AccountRepository accountRepository;
 
+  private ModelMapper modelMapper;
+
   /*
    * (non-Javadoc)
    * 
@@ -50,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
     LOGGER.debug("Finding customers by page={} and size={}", page, size);
     Pageable pageable = new PageRequest(page, size);
     Page<Customer> customerPage = customerRepository.findAll(pageable);
-    return customerPage.getContent().stream().map(customer -> CustomerMapper.toDto(customer))
+    return customerPage.getContent().stream().map(customer -> modelMapper.map(customer, CustomerDto.class))
         .collect(Collectors.toList());
   }
 
@@ -70,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
       LOGGER.warn(msg);
       throw new ResourceNotFoundException(msg);
     }
-    return CustomerMapper.toDto(entity);
+    return modelMapper.map(entity, CustomerDto.class);
   }
 
   /*
@@ -90,7 +91,7 @@ public class CustomerServiceImpl implements CustomerService {
       LOGGER.warn(msg);
       throw new ResourceAlreadyExistsException(msg);
     }
-    return CustomerMapper.toDto(customerRepository.save(CustomerMapper.toEntity(customer)));
+    return modelMapper.map(customerRepository.save(modelMapper.map(customer, Customer.class)), CustomerDto.class);
   }
 
   /*
@@ -105,7 +106,7 @@ public class CustomerServiceImpl implements CustomerService {
     LOGGER.debug("Updating customer {}", customer);
     Assert.notNull(customer);
     customerMustExists(customer.getId());
-    return CustomerMapper.toDto(customerRepository.save(CustomerMapper.toEntity(customer)));
+    return modelMapper.map(customerRepository.save(modelMapper.map(customer, Customer.class)), CustomerDto.class);
   }
 
   /*
@@ -134,7 +135,8 @@ public class CustomerServiceImpl implements CustomerService {
     LOGGER.debug("Finding accounts by userId={} and page={} and size={}", customerId, page, size);
     Pageable pageable = new PageRequest(page, size);
     Page<Account> accountsPage = accountRepository.findByCustomer(customerId, pageable);
-    return accountsPage.getContent().stream().map(account -> AccountMapper.toDto(account)).collect(Collectors.toList());
+    return accountsPage.getContent().stream().map(account -> modelMapper.map(account, AccountDto.class))
+        .collect(Collectors.toList());
   }
 
   /*
@@ -153,7 +155,7 @@ public class CustomerServiceImpl implements CustomerService {
       LOGGER.warn(msg);
       throw new ResourceNotFoundException(msg);
     }
-    return AccountMapper.toDto(entity);
+    return modelMapper.map(entity, AccountDto.class);
   }
 
   /*
@@ -165,14 +167,14 @@ public class CustomerServiceImpl implements CustomerService {
   @Transactional
   public AccountDto addAccount(AccountDto account) {
     Assert.notNull(account);
-    Assert.notNull(account.getCustomer());
+    Assert.notNull(account.getCustomerId());
     boolean exists = account.getId() == null ? false : accountRepository.exists(account.getId());
     if (exists) {
       String msg = String.format("AccountId=%s already exists", account.getId());
       LOGGER.warn(msg);
       throw new ResourceAlreadyExistsException(msg);
     }
-    return AccountMapper.toDto(accountRepository.save(AccountMapper.toEntity(account)));
+    return modelMapper.map(accountRepository.save(modelMapper.map(account, Account.class)), AccountDto.class);
   }
 
   /*
@@ -187,7 +189,7 @@ public class CustomerServiceImpl implements CustomerService {
     LOGGER.debug("Updating account {}", account);
     Assert.notNull(account);
     accountMustExists(account.getId());
-    return AccountMapper.toDto(accountRepository.save(AccountMapper.toEntity(account)));
+    return modelMapper.map(accountRepository.save(modelMapper.map(account, Account.class)), AccountDto.class);
   }
 
   /*
@@ -233,6 +235,11 @@ public class CustomerServiceImpl implements CustomerService {
   @Resource
   public void setCustomerRepository(CustomerRepository customerRepository) {
     this.customerRepository = customerRepository;
+  }
+
+  @Resource
+  public void setModelMapper(ModelMapper modelMapper) {
+    this.modelMapper = modelMapper;
   }
 
 }

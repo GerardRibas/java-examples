@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.Times;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +55,7 @@ public class CustomerServiceTest {
     service = new CustomerServiceImpl();
     service.setCustomerRepository(customerRepository);
     service.setAccountRepository(accountRepository);
+    service.setModelMapper(new ModelMapper());
   }
 
   @Test
@@ -204,10 +206,10 @@ public class CustomerServiceTest {
   @Test
   public void testAddAccount() {
     AccountDto accountDto = new AccountDto(null, 1L, new Date(), "Some account name");
-    Account account = new Account(accountDto.getId(), new Customer(accountDto.getCustomer()), accountDto.getOpened(),
+    Account account = new Account(accountDto.getId(), new Customer(accountDto.getCustomerId()), accountDto.getOpened(),
         accountDto.getName());
     Account savedAccount =
-        new Account(1L, new Customer(accountDto.getCustomer()), accountDto.getOpened(), accountDto.getName());
+        new Account(1L, new Customer(accountDto.getCustomerId()), accountDto.getOpened(), accountDto.getName());
     AccountDto savedAccountDto = new AccountDto(savedAccount.getId(), savedAccount.getCustomer().getId(),
         savedAccount.getOpened(), savedAccount.getName());
     when(accountRepository.save(eq(account))).thenReturn(savedAccount);
@@ -228,7 +230,7 @@ public class CustomerServiceTest {
   @Test
   public void testUpdateAccount() {
     AccountDto accountDto = new AccountDto(1L, 1L, new Date(), "Some account name");
-    Account account = new Account(accountDto.getId(), new Customer(accountDto.getCustomer()), accountDto.getOpened(),
+    Account account = new Account(accountDto.getId(), new Customer(accountDto.getCustomerId()), accountDto.getOpened(),
         accountDto.getName());
     when(accountRepository.exists(eq(accountDto.getId()))).thenReturn(true);
     when(accountRepository.save(eq(account))).thenReturn(account);

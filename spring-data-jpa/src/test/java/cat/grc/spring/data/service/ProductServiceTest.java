@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.Times;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +57,7 @@ public class ProductServiceTest {
     service = new ProductServiceImpl();
     service.setProductCategoryRepository(productCategoryRepository);
     service.setProductRepository(productRepository);
+    service.setModelMapper(new ModelMapper());
   }
 
   @Test
