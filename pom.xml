@@ -1,83 +1,88 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>cat.grc.examples</groupId>
-	<artifactId>java-examples</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>cat.grc.examples</groupId>
+ <artifactId>java-examples</artifactId>
+ <version>1.0.0-SNAPSHOT</version>
+ <packaging>pom</packaging>
 
-	<description>Set of Useful Java Examples</description>
+ <description>Set of Useful Java Examples</description>
 
-	<developers>
-		<developer>
-			<id>grc</id>
-			<name>Gerard Ribas</name>
-			<email>gerard.ribas.canals@gmail.com</email>
-			<url>http://www.gerardribas.me</url>
-		</developer>
-	</developers>
+ <developers>
+  <developer>
+   <id>grc</id>
+   <name>Gerard Ribas</name>
+   <email>gerard.ribas.canals@gmail.com</email>
+   <url>http://www.gerardribas.me</url>
+  </developer>
+ </developers>
 
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<org.springframework.version>4.2.0.RELEASE</org.springframework.version>
-		<ch.qos.logback.version>1.1.3</ch.qos.logback.version>
-		<com.google.guava.version>18.0</com.google.guava.version>
-		<com.openpojo.version>0.7.4</com.openpojo.version>
-		<nl.jqno.equalsverifier.version>1.7.3</nl.jqno.equalsverifier.version>
-		<hikaricp.version>2.4.0</hikaricp.version>
-	</properties>
+ <properties>
+  <maven.compiler.source>1.8</maven.compiler.source>
+  <maven.compiler.target>1.8</maven.compiler.target>
+  <ch.qos.logback.version>1.1.3</ch.qos.logback.version>
+  <com.google.guava.version>18.0</com.google.guava.version>
+  <com.openpojo.version>0.7.5</com.openpojo.version>
+  <nl.jqno.equalsverifier.version>1.7.4</nl.jqno.equalsverifier.version>
+  <hikaricp.version>2.4.1</hikaricp.version>
+  <org.modelmapper.version>0.7.4</org.modelmapper.version>
+ </properties>
 
-	<modules>
-		<module>spring-data-jpa</module>
-	</modules>
+ <modules>
+  <module>spring-data-jpa</module>
+ </modules>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.2.5.RELEASE</version>
-	</parent>
+ <parent>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-parent</artifactId>
+  <version>1.2.5.RELEASE</version>
+ </parent>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>${ch.qos.logback.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-core</artifactId>
-				<version>${ch.qos.logback.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${com.google.guava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.zaxxer</groupId>
-				<artifactId>HikariCP</artifactId>
-				<version>${hikaricp.version}</version>
-				<scope>compile</scope>
-			</dependency>
+ <dependencyManagement>
+  <dependencies>
+   <dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>${ch.qos.logback.version}</version>
+   </dependency>
+   <dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-core</artifactId>
+    <version>${ch.qos.logback.version}</version>
+   </dependency>
+   <dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>${com.google.guava.version}</version>
+   </dependency>
+   <dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+    <version>${hikaricp.version}</version>
+    <scope>compile</scope>
+   </dependency>
+   <dependency>
+    <groupId>org.modelmapper</groupId>
+    <artifactId>modelmapper</artifactId>
+    <version>${org.modelmapper.version}</version>
+   </dependency>
 
-			<!-- TEST DEPENENCIES -->
-			<dependency>
-				<groupId>com.openpojo</groupId>
-				<artifactId>openpojo</artifactId>
-				<version>${com.openpojo.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>nl.jqno.equalsverifier</groupId>
-				<artifactId>equalsverifier</artifactId>
-				<version>${nl.jqno.equalsverifier.version}</version>
-				<scope>test</scope>
-			</dependency>
+   <!-- TEST DEPENENCIES -->
+   <dependency>
+    <groupId>com.openpojo</groupId>
+    <artifactId>openpojo</artifactId>
+    <version>${com.openpojo.version}</version>
+    <scope>test</scope>
+   </dependency>
+   <dependency>
+    <groupId>nl.jqno.equalsverifier</groupId>
+    <artifactId>equalsverifier</artifactId>
+    <version>${nl.jqno.equalsverifier.version}</version>
+    <scope>test</scope>
+   </dependency>
 
-		</dependencies>
-	</dependencyManagement>
+  </dependencies>
+ </dependencyManagement>
 
 
 </project>
