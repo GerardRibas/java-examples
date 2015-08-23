@@ -51,6 +51,11 @@ public class Product implements Serializable {
 
   }
 
+  public Product(Long id) {
+    super();
+    this.id = id;
+  }
+
   public Product(Long id, Product parent, ProductCategory category, String name, BigDecimal price, String color,
       String size, String description) {
     super();

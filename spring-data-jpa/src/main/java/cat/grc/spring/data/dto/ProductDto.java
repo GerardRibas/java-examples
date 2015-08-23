@@ -34,6 +34,11 @@ public class ProductDto implements Serializable {
 
   }
 
+  public ProductDto(Long id) {
+    super();
+    this.id = id;
+  }
+
   public ProductDto(Long id, ProductDto parent, ProductCategoryDto category, String name, BigDecimal price,
       String color, String size, String description) {
     super();

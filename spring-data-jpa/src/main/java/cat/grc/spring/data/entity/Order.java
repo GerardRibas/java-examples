@@ -40,6 +40,18 @@ public class Order implements Serializable {
 
   private Collection<OrderItem> items;
 
+  public Order() {
+
+  }
+
+  public Order(Long id, Customer customer, Date placed, BigDecimal total) {
+    super();
+    this.id = id;
+    this.customer = customer;
+    this.placed = placed;
+    this.total = total;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ORDER_ID")
@@ -118,7 +130,5 @@ public class Order implements Serializable {
     return MoreObjects.toStringHelper(this).add("id", id).add("customer", customer).add("placed", placed)
         .add("total", total).add("invoices", invoices).add("items", items).toString();
   }
-
-
 
 }

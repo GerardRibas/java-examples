@@ -41,6 +41,19 @@ public class OrderItem implements Serializable {
 
   private BigDecimal cost;
 
+  public OrderItem() {
+
+  }
+
+  public OrderItem(Long id, Order order, Product product, Long quantity, BigDecimal cost) {
+    super();
+    this.id = id;
+    this.order = order;
+    this.product = product;
+    this.quantity = quantity;
+    this.cost = cost;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ORDER_ITEM_ID")
@@ -101,14 +114,16 @@ public class OrderItem implements Serializable {
 
   @Override
   public final int hashCode() {
-    return Objects.hashCode(id, order, product, invoiceLineItem, quantity, cost);
+    return Objects.hashCode(id, order == null ? null : order.getId(), product, invoiceLineItem, quantity, cost);
   }
 
   @Override
   public final boolean equals(Object object) {
     if (object instanceof OrderItem) {
       OrderItem that = (OrderItem) object;
-      return Objects.equal(this.id, that.id) && Objects.equal(this.order, that.order)
+      return Objects.equal(this.id, that.id)
+          && Objects.equal(this.order == null ? null : this.order.getId(),
+              that.order == null ? null : that.order.getId())
           && Objects.equal(this.product, that.product) && Objects.equal(this.invoiceLineItem, that.invoiceLineItem)
           && Objects.equal(this.quantity, that.quantity) && Objects.equal(this.cost, that.cost);
     }
@@ -117,8 +132,9 @@ public class OrderItem implements Serializable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("id", id).add("order", order).add("product", product)
-        .add("invoiceLineItem", invoiceLineItem).add("quantity", quantity).add("cost", cost).toString();
+    return MoreObjects.toStringHelper(this).add("id", id).add("orderId", order == null ? null : order.getId())
+        .add("product", product).add("invoiceLineItem", invoiceLineItem).add("quantity", quantity).add("cost", cost)
+        .toString();
   }
 
 }

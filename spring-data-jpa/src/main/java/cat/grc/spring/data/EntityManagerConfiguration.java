@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import cat.grc.spring.data.dto.OrderDto;
+import cat.grc.spring.data.entity.Order;
 import liquibase.integration.spring.SpringLiquibase;
 
 /**
@@ -116,7 +119,14 @@ public class EntityManagerConfiguration {
 
   @Bean
   public ModelMapper modelMapper() {
-    return new ModelMapper();
+    ModelMapper mapper = new ModelMapper();
+    mapper.addMappings(new PropertyMap<Order, OrderDto>() {
+      @Override
+      protected void configure() {
+        skip().setItems(null);
+      }
+    });
+    return mapper;
   }
 
 }
