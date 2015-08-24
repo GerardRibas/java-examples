@@ -5,6 +5,7 @@ package cat.grc.spring.data.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,6 +46,26 @@ public class InvoiceLineItem implements Serializable {
   private BigDecimal derivedVatPayable;
 
   private BigDecimal derivedTotalCost;
+
+  public InvoiceLineItem() {
+
+  }
+
+  public InvoiceLineItem(OrderItem item, Invoice invoice) {
+    super();
+    this.item = item;
+    this.invoice = invoice;
+    this.derivedProductCost = item.getCost();
+    this.product = item.getProduct();
+    this.productTitle = item.getProduct().getName();
+    this.price = item.getProduct().getPrice();
+    this.derivedVatPayable = item.getCost().multiply(new BigDecimal(item.getProduct().getCategory().getVatRating()))
+        .setScale(2, RoundingMode.HALF_EVEN);
+    this.quantity = item.getQuantity();
+    this.derivedVatPayable = derivedProductCost.multiply(derivedVatPayable).setScale(2, RoundingMode.HALF_EVEN);
+  }
+
+
 
   @Id
   @Column(name = "ORDER_ITEM_ID")
@@ -151,9 +172,11 @@ public class InvoiceLineItem implements Serializable {
     if (object instanceof InvoiceLineItem) {
       InvoiceLineItem that = (InvoiceLineItem) object;
       return Objects.equal(this.id, that.id) && Objects.equal(this.item, that.item)
-          && Objects.equal(this.invoice, that.invoice) && Objects.equal(this.product, that.product)
-          && Objects.equal(this.productTitle, that.productTitle) && Objects.equal(this.quantity, that.quantity)
-          && Objects.equal(this.price, that.price) && Objects.equal(this.derivedProductCost, that.derivedProductCost)
+          && Objects.equal(this.invoice == null ? null : this.invoice.getNumber(),
+              that.invoice == null ? null : that.invoice.getNumber())
+          && Objects.equal(this.product, that.product) && Objects.equal(this.productTitle, that.productTitle)
+          && Objects.equal(this.quantity, that.quantity) && Objects.equal(this.price, that.price)
+          && Objects.equal(this.derivedProductCost, that.derivedProductCost)
           && Objects.equal(this.derivedVatPayable, that.derivedVatPayable)
           && Objects.equal(this.derivedTotalCost, that.derivedTotalCost);
     }

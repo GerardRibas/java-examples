@@ -3,6 +3,7 @@ package cat.grc.spring.data.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.util.Assert;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -36,6 +39,18 @@ public class Invoice implements Serializable {
   private Collection<FinancialTransaction> transactions;
 
   private Collection<InvoiceLineItem> lines;
+
+  public Invoice() {
+
+  }
+
+  public Invoice(Order order, Date created) {
+    Assert.notNull(order);
+    Assert.notNull(order.getItems());
+    this.order = order;
+    this.created = created;
+    this.lines = order.getItems().stream().map(item -> new InvoiceLineItem(item, this)).collect(Collectors.toList());
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

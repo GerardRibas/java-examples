@@ -43,7 +43,9 @@ public class OrderServiceImpl implements OrderService {
 
   private ProductService productService;
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see cat.grc.spring.data.service.OrderService#findOrdersByCustomerId(java.lang.Long, int, int)
    */
   @Override
@@ -57,12 +59,18 @@ public class OrderServiceImpl implements OrderService {
         .collect(Collectors.toList());
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see cat.grc.spring.data.service.OrderService#findOrderById(java.lang.Long)
    */
   @Override
   @Transactional(readOnly = true)
   public OrderDto findOrderById(Long id) {
+    return modelMapper.map(findOrder(id), OrderDto.class);
+  }
+
+  protected Order findOrder(Long id) {
     LOGGER.debug("Finding order by id={}", id);
     Assert.notNull(id);
     Order entity = orderRepository.findOne(id);
@@ -71,10 +79,12 @@ public class OrderServiceImpl implements OrderService {
       LOGGER.warn(msg);
       throw new ResourceNotFoundException(msg);
     }
-    return modelMapper.map(entity, OrderDto.class);
+    return entity;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see cat.grc.spring.data.service.OrderService#addOrder(cat.grc.spring.data.dto.OrderDto)
    */
   @Override
@@ -94,7 +104,9 @@ public class OrderServiceImpl implements OrderService {
     return modelMapper.map(savedEntity, OrderDto.class);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see cat.grc.spring.data.service.OrderService#updateOrder(cat.grc.spring.data.dto.OrderDto)
    */
   @Override
@@ -109,7 +121,9 @@ public class OrderServiceImpl implements OrderService {
     return modelMapper.map(savedEntity, OrderDto.class);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see cat.grc.spring.data.service.OrderService#deleteOrder(java.lang.Long)
    */
   @Override
