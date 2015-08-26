@@ -18,10 +18,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import cat.grc.spring.data.dto.FinancialTransactionDto;
 import cat.grc.spring.data.dto.InvoiceDto;
+import cat.grc.spring.data.entity.FinancialTransaction;
 import cat.grc.spring.data.entity.Invoice;
 import cat.grc.spring.data.entity.Order;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
+import cat.grc.spring.data.repository.FinancialTransactionRepository;
 import cat.grc.spring.data.repository.InvoiceRepository;
 
 /**
@@ -29,7 +32,7 @@ import cat.grc.spring.data.repository.InvoiceRepository;
  *
  */
 @Service
-public class InvoiceServiceImpl {
+public class InvoiceServiceImpl implements InvoiceService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceServiceImpl.class);
 
@@ -37,8 +40,14 @@ public class InvoiceServiceImpl {
 
   private OrderService orderService;
 
+  private FinancialTransactionRepository financialTransactionRepository;
+
   private ModelMapper modelMapper;
 
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#findInvoicesByCustomer(java.lang.Long, int, int)
+   */
+  @Override
   @Transactional(readOnly = true)
   public Collection<InvoiceDto> findInvoicesByCustomer(Long customerId, int page, int size) {
     LOGGER.debug("Finding invoices by customerId={}", customerId);
@@ -49,6 +58,10 @@ public class InvoiceServiceImpl {
         .collect(Collectors.toList());
   }
 
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#findInvoicesByOrder(java.lang.Long, int, int)
+   */
+  @Override
   @Transactional(readOnly = true)
   public Collection<InvoiceDto> findInvoicesByOrder(Long orderId, int page, int size) {
     LOGGER.debug("Finding invoices by orderId={}", orderId);
@@ -59,6 +72,10 @@ public class InvoiceServiceImpl {
         .collect(Collectors.toList());
   }
 
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#createInvoiceFromOrder(cat.grc.spring.data.dto.InvoiceDto)
+   */
+  @Override
   @Transactional
   public InvoiceDto createInvoiceFromOrder(InvoiceDto invoice) {
     LOGGER.debug("Adding a new invoice for {}", invoice);
@@ -75,17 +92,74 @@ public class InvoiceServiceImpl {
     }
   }
 
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#deleteInvoice(java.lang.Long)
+   */
+  @Override
   @Transactional
   public void deleteInvoice(Long id) {
     LOGGER.debug("Deleting invoice by id {}", id);
     Assert.notNull(id);
-    boolean exists = invoiceRepository.exists(id);
-    if (!exists) {
-      String msg = String.format("Invoice does not exists with id=%d", id);
+    invoiceMustExists(id);
+    invoiceRepository.delete(id);
+  }
+
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#findTransactionById(java.lang.Long)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public FinancialTransactionDto findTransactionById(Long id) {
+    LOGGER.debug("Find transaction by id={}", id);
+    FinancialTransaction transaction = financialTransactionRepository.findOne(id);
+    if (transaction == null) {
+      String msg = String.format("Transaction does not exists with id=%d", id);
       LOGGER.error(msg);
       throw new ResourceNotFoundException(msg);
     }
-    invoiceRepository.delete(id);
+    return modelMapper.map(transaction, FinancialTransactionDto.class);
+  }
+
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#findTransactionsByInvoiceNumber(java.lang.Long, int, int)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public Collection<FinancialTransactionDto> findTransactionsByInvoiceNumber(Long number, int page, int size) {
+    LOGGER.debug("Find transaction by InvoiceNumber={}", number);
+    invoiceMustExists(number);
+    Pageable pageable = new PageRequest(page, size);
+    Page<FinancialTransaction> transactionsPage = financialTransactionRepository.findByInvoice(number, pageable);
+    return transactionsPage.getContent().stream()
+        .map(transaction -> modelMapper.map(transaction, FinancialTransactionDto.class)).collect(Collectors.toList());
+  }
+
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#payInvoice(cat.grc.spring.data.dto.FinancialTransactionDto)
+   */
+  @Override
+  @Transactional
+  public FinancialTransactionDto payInvoice(FinancialTransactionDto transaction) {
+    LOGGER.debug("Paying transaction={}", transaction);
+    Assert.notNull(transaction);
+    Assert.notNull(transaction.getAccountId());
+    Assert.notNull(transaction.getInvoiceNumber());
+    Assert.notNull(transaction.getTypeCode());
+    invoiceMustExists(transaction.getInvoiceNumber());
+    FinancialTransaction savedTransaction =
+        financialTransactionRepository.save(modelMapper.map(transaction, FinancialTransaction.class));
+    return modelMapper.map(savedTransaction, FinancialTransactionDto.class);
+  }
+
+  /* (non-Javadoc)
+   * @see cat.grc.spring.data.service.InvoiceService#deleteFinancialTransaction(java.lang.Long)
+   */
+  @Override
+  @Transactional
+  public void deleteFinancialTransaction(Long id) {
+    LOGGER.debug("Deleting transaction by id {}", id);
+    transactionMustExists(id);
+    financialTransactionRepository.delete(id);
   }
 
   @Resource
@@ -99,8 +173,35 @@ public class InvoiceServiceImpl {
   }
 
   @Resource
+  public void setFinancialTransactionRepository(FinancialTransactionRepository financialTransactionRepository) {
+    this.financialTransactionRepository = financialTransactionRepository;
+  }
+
+  @Resource
   public void setModelMapper(ModelMapper modelMapper) {
     this.modelMapper = modelMapper;
+  }
+
+  private boolean transactionMustExists(Long id) {
+    Assert.notNull(id);
+    boolean exists = financialTransactionRepository.exists(id);
+    if (!exists) {
+      String msg = String.format("Transaction does not exists with id=%d", id);
+      LOGGER.error(msg);
+      throw new ResourceNotFoundException(msg);
+    }
+    return exists;
+  }
+
+  private boolean invoiceMustExists(Long id) {
+    Assert.notNull(id);
+    boolean exists = invoiceRepository.exists(id);
+    if (!exists) {
+      String msg = String.format("Invoice does not exists with id=%d", id);
+      LOGGER.error(msg);
+      throw new ResourceNotFoundException(msg);
+    }
+    return exists;
   }
 
 }

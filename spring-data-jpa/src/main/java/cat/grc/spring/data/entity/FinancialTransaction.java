@@ -41,6 +41,21 @@ public class FinancialTransaction implements Serializable {
 
   private BigDecimal amount;
 
+  public FinancialTransaction() {
+
+  }
+
+  public FinancialTransaction(Long id, Account account, Invoice invoice, TransactionType type, Date transactionDate,
+      BigDecimal amount) {
+    super();
+    this.id = id;
+    this.account = account;
+    this.invoice = invoice;
+    this.type = type;
+    this.transactionDate = transactionDate;
+    this.amount = amount;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "TRANSACTION_ID")
