@@ -26,6 +26,8 @@
   <nl.jqno.equalsverifier.version>1.7.4</nl.jqno.equalsverifier.version>
   <hikaricp.version>2.4.1</hikaricp.version>
   <org.modelmapper.version>0.7.4</org.modelmapper.version>
+  <spring-test-dbunit.version>1.2.1</spring-test-dbunit.version>
+  <org.dbunit.version>2.5.1</org.dbunit.version>
  </properties>
 
  <modules>
@@ -80,7 +82,18 @@
     <version>${nl.jqno.equalsverifier.version}</version>
     <scope>test</scope>
    </dependency>
-
+   <dependency>
+    <groupId>com.github.springtestdbunit</groupId>
+    <artifactId>spring-test-dbunit</artifactId>
+    <version>${spring-test-dbunit.version}</version>
+    <scope>test</scope>
+   </dependency>
+   <dependency>
+    <groupId>org.dbunit</groupId>
+    <artifactId>dbunit</artifactId>
+    <version>${org.dbunit.version}</version>
+    <scope>test</scope>
+   </dependency>
   </dependencies>
  </dependencyManagement>
 
