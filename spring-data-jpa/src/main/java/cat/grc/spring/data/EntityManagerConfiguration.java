@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -36,6 +37,7 @@ import liquibase.integration.spring.SpringLiquibase;
  */
 @Configuration
 @EnableTransactionManagement
+@ComponentScan("cat.grc.spring.data")
 @EnableJpaRepositories(basePackages = "cat.grc.spring.data.repository")
 @PropertySource("classpath:application.properties")
 public class EntityManagerConfiguration {

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -21,6 +22,9 @@ import cat.grc.spring.data.dto.AccountDto;
 import cat.grc.spring.data.dto.CustomerDto;
 import cat.grc.spring.data.entity.Account;
 import cat.grc.spring.data.entity.Customer;
+import cat.grc.spring.data.exception.AccountWithTransactionsException;
+import cat.grc.spring.data.exception.CustomerWithAccountsException;
+import cat.grc.spring.data.exception.CustomerWithOrdersException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
 import cat.grc.spring.data.repository.AccountRepository;
@@ -30,6 +34,7 @@ import cat.grc.spring.data.repository.CustomerRepository;
  * @author Gerard Ribas (gerard.ribas.canals@gmail.com)
  *
  */
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomerServiceImpl.class);
@@ -63,15 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   @Transactional(readOnly = true)
   public CustomerDto findCustomerById(Long id) {
-    LOGGER.debug("Finding category by id={}", id);
-    Assert.notNull(id);
-    Customer entity = customerRepository.findOne(id);
-    if (entity == null) {
-      String msg = String.format("No Customer found for id=%d", id);
-      LOGGER.warn(msg);
-      throw new ResourceNotFoundException(msg);
-    }
-    return modelMapper.map(entity, CustomerDto.class);
+    return modelMapper.map(findCustomerEntityById(id), CustomerDto.class);
   }
 
   /*
@@ -119,7 +116,16 @@ public class CustomerServiceImpl implements CustomerService {
   public void deleteCustomer(Long id) {
     LOGGER.debug("Delete customer by id={}", id);
     Assert.notNull(id);
-    customerMustExists(id);
+    Customer customer = findCustomerEntityById(id);
+    if (!customer.getAccounts().isEmpty()) {
+      String msg = String.format("Customer %d has accounts, please delete first the accounts", id);
+      LOGGER.error(msg);
+      throw new CustomerWithAccountsException(msg);
+    } else if (!customer.getOrders().isEmpty()) {
+      String msg = String.format("Customer %d has orders, please delete first the orders", id);
+      LOGGER.error(msg);
+      throw new CustomerWithOrdersException(msg);
+    }
     customerRepository.delete(id);
   }
 
@@ -147,15 +153,7 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   @Transactional(readOnly = true)
   public AccountDto findAccountById(Long id) {
-    LOGGER.debug("Finding account by id={}", id);
-    Assert.notNull(id);
-    Account entity = accountRepository.findOne(id);
-    if (entity == null) {
-      String msg = String.format("No Account found for id=%d", id);
-      LOGGER.warn(msg);
-      throw new ResourceNotFoundException(msg);
-    }
-    return modelMapper.map(entity, AccountDto.class);
+    return modelMapper.map(findAccountEntityById(id), AccountDto.class);
   }
 
   /*
@@ -201,8 +199,38 @@ public class CustomerServiceImpl implements CustomerService {
   @Transactional
   public void deleteAccount(Long id) {
     LOGGER.debug("Deleting account by id={}", id);
-    accountMustExists(id);
+    Account account = findAccountEntityById(id);
+    if (!account.getTransactions().isEmpty()) {
+      String msg =
+          String.format("Account %d has transactions associated, please revise it before deleting the account", id);
+      LOGGER.error(msg);
+      throw new AccountWithTransactionsException(msg);
+    }
     accountRepository.delete(id);
+  }
+
+  private Customer findCustomerEntityById(Long id) {
+    LOGGER.debug("Finding category by id={}", id);
+    Assert.notNull(id);
+    Customer entity = customerRepository.findOne(id);
+    if (entity == null) {
+      String msg = String.format("No Customer found for id=%d", id);
+      LOGGER.warn(msg);
+      throw new ResourceNotFoundException(msg);
+    }
+    return entity;
+  }
+
+  private Account findAccountEntityById(Long id) {
+    LOGGER.debug("Finding account by id={}", id);
+    Assert.notNull(id);
+    Account entity = accountRepository.findOne(id);
+    if (entity == null) {
+      String msg = String.format("No Account found for id=%d", id);
+      LOGGER.warn(msg);
+      throw new ResourceNotFoundException(msg);
+    }
+    return entity;
   }
 
   private boolean accountMustExists(Long id) {

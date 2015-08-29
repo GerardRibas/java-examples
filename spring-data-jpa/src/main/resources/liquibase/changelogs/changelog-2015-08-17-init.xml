@@ -195,7 +195,7 @@
   </createTable>
  </changeSet>
  
- <changeSet id="changelog-2015-08-17-data" author="gerard.ribas">
+ <changeSet id="changelog-2015-08-17-data" author="gerard.ribas" context="!integration-test">
  	<loadData tableName="CUSTOMERS" file="liquibase/loaddata/CUSTOMERS.csv" separator="|" />
  	<loadData tableName="ACCOUNTS" file="liquibase/loaddata/ACCOUNTS.csv" separator="|" />
  	<loadData tableName="PRODUCT_CATEGORIES" file="liquibase/loaddata/PRODUCT_CATEGORIES.csv" separator="|" /> 	

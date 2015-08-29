@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 import org.junit.Before;
@@ -30,6 +31,11 @@ import cat.grc.spring.data.dto.AccountDto;
 import cat.grc.spring.data.dto.CustomerDto;
 import cat.grc.spring.data.entity.Account;
 import cat.grc.spring.data.entity.Customer;
+import cat.grc.spring.data.entity.FinancialTransaction;
+import cat.grc.spring.data.entity.Order;
+import cat.grc.spring.data.exception.AccountWithTransactionsException;
+import cat.grc.spring.data.exception.CustomerWithAccountsException;
+import cat.grc.spring.data.exception.CustomerWithOrdersException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
 import cat.grc.spring.data.repository.AccountRepository;
@@ -147,10 +153,40 @@ public class CustomerServiceTest {
   @Test
   public void testDeleteCustomer() {
     Long customerId = 1L;
-    when(customerRepository.exists(eq(customerId))).thenReturn(true);
+    Customer customer = mock(Customer.class);
+    when(customer.getAccounts()).thenReturn(Collections.emptyList());
+    when(customer.getOrders()).thenReturn(Collections.emptyList());
+    when(customerRepository.findOne(eq(customerId))).thenReturn(customer);
     service.deleteCustomer(customerId);
     verify(customerRepository).delete(eq(customerId));
-    verify(customerRepository).exists(eq(customerId));
+    verify(customerRepository).findOne(eq(customerId));
+    verifyNoMoreInteractions(customerRepository);
+  }
+
+  @Test(expected = CustomerWithAccountsException.class)
+  public void testDeleteCustomer_CustomerWithAccountsException() {
+    Long customerId = 1L;
+    Customer customer = mock(Customer.class);
+    Account account = mock(Account.class);
+    when(customer.getAccounts()).thenReturn(Arrays.asList(account));
+    when(customerRepository.findOne(eq(customerId))).thenReturn(customer);
+    service.deleteCustomer(customerId);
+    verify(customerRepository).delete(eq(customerId));
+    verify(customerRepository).findOne(eq(customerId));
+    verifyNoMoreInteractions(customerRepository);
+  }
+
+  @Test(expected = CustomerWithOrdersException.class)
+  public void testDeleteCustomer_CustomerWithOrdersException() {
+    Long customerId = 1L;
+    Customer customer = mock(Customer.class);
+    Order order = mock(Order.class);
+    when(customer.getOrders()).thenReturn(Arrays.asList(order));
+    when(customer.getAccounts()).thenReturn(Collections.emptyList());
+    when(customerRepository.findOne(eq(customerId))).thenReturn(customer);
+    service.deleteCustomer(customerId);
+    verify(customerRepository).delete(eq(customerId));
+    verify(customerRepository).findOne(eq(customerId));
     verifyNoMoreInteractions(customerRepository);
   }
 
@@ -251,10 +287,23 @@ public class CustomerServiceTest {
   @Test
   public void testDeleteAccount() {
     Long accountId = 1L;
-    when(accountRepository.exists(eq(accountId))).thenReturn(true);
+    Account account = mock(Account.class);
+    when(account.getTransactions()).thenReturn(Collections.emptyList());
+    when(accountRepository.findOne(accountId)).thenReturn(account);
     service.deleteAccount(accountId);
     verify(accountRepository).delete(eq(accountId));
-    verify(accountRepository).exists(eq(accountId));
+    verifyZeroInteractions(customerRepository);
+  }
+
+  @Test(expected = AccountWithTransactionsException.class)
+  public void testDeleteAccount_AccountWithTransactionsException() {
+    Long accountId = 1L;
+    Account account = mock(Account.class);
+    FinancialTransaction transaction = mock(FinancialTransaction.class);
+    when(account.getTransactions()).thenReturn(Arrays.asList(transaction));
+    when(accountRepository.findOne(accountId)).thenReturn(account);
+    service.deleteAccount(accountId);
+    verify(accountRepository).delete(eq(accountId));
     verifyZeroInteractions(customerRepository);
   }
 
