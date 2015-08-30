@@ -22,6 +22,7 @@ import cat.grc.spring.data.dto.ProductCategoryDto;
 import cat.grc.spring.data.dto.ProductDto;
 import cat.grc.spring.data.entity.Product;
 import cat.grc.spring.data.entity.ProductCategory;
+import cat.grc.spring.data.exception.ProductCategoryHasProductsException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
 import cat.grc.spring.data.repository.ProductCategoryRepository;
@@ -65,15 +66,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional(readOnly = true)
   public ProductCategoryDto findCategoryById(Long id) {
-    LOGGER.debug("Finding category by id={}", id);
-    Assert.notNull(id);
-    ProductCategory entity = productCategoryRepository.findOne(id);
-    if (entity == null) {
-      String msg = String.format("No ProductCategory found for id=%d", id);
-      LOGGER.warn(msg);
-      throw new ResourceNotFoundException(msg);
-    }
-    return modelMapper.map(entity, ProductCategoryDto.class);
+    return modelMapper.map(findCategoryEntityById(id), ProductCategoryDto.class);
   }
 
   /*
@@ -123,7 +116,12 @@ public class ProductServiceImpl implements ProductService {
   @Transactional
   public void deleteCategory(Long id) {
     LOGGER.debug("Deleting product category by id={}", id);
-    productCategoryMustExists(id);
+    ProductCategory category = findCategoryEntityById(id);
+    if (!category.getProducts().isEmpty()) {
+      String msg = String.format("Product category %d has products associated", id);
+      LOGGER.error(msg);
+      throw new ProductCategoryHasProductsException(msg);
+    }
     productCategoryRepository.delete(id);
   }
 
@@ -224,6 +222,18 @@ public class ProductServiceImpl implements ProductService {
     LOGGER.debug("Deleting product by id={}", id);
     productMustExists(id);
     productRepository.delete(id);
+  }
+
+  private ProductCategory findCategoryEntityById(Long id) {
+    LOGGER.debug("Finding category by id={}", id);
+    Assert.notNull(id);
+    ProductCategory entity = productCategoryRepository.findOne(id);
+    if (entity == null) {
+      String msg = String.format("No ProductCategory found for id=%d", id);
+      LOGGER.warn(msg);
+      throw new ResourceNotFoundException(msg);
+    }
+    return entity;
   }
 
   private boolean productCategoryMustExists(Long id) {
