@@ -13,7 +13,6 @@ import javax.annotation.Resource;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +22,8 @@ import org.springframework.util.Assert;
 
 import cat.grc.spring.data.dto.OrderDto;
 import cat.grc.spring.data.entity.Order;
+import cat.grc.spring.data.entity.OrderItem;
+import cat.grc.spring.data.entity.Product;
 import cat.grc.spring.data.exception.OrderWithInvoicesException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
@@ -41,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
 
   private ModelMapper modelMapper;
 
-  private ProductService productService;
+  private ProductServicePkg productService;
 
   /*
    * (non-Javadoc)
@@ -99,8 +100,7 @@ public class OrderServiceImpl implements OrderService {
       LOGGER.warn(msg);
       throw new ResourceAlreadyExistsException(msg);
     }
-    OrderDto refreshedOrder = refreshOrderDto(order);
-    Order savedEntity = orderRepository.save(modelMapper.map(refreshedOrder, Order.class));
+    Order savedEntity = orderRepository.save(refreshOrderDto(order));
     return modelMapper.map(savedEntity, OrderDto.class);
   }
 
@@ -116,8 +116,7 @@ public class OrderServiceImpl implements OrderService {
     Assert.notNull(order);
     Assert.notEmpty(order.getItems());
     orderMustExists(order.getId());
-    OrderDto refreshedOrder = refreshOrderDto(order);
-    Order savedEntity = orderRepository.save(modelMapper.map(refreshedOrder, Order.class));
+    Order savedEntity = orderRepository.save(refreshOrderDto(order));
     return modelMapper.map(savedEntity, OrderDto.class);
   }
 
@@ -157,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Resource
-  public void setProductService(ProductService productService) {
+  public void setProductService(ProductServicePkg productService) {
     this.productService = productService;
   }
 
@@ -179,21 +178,19 @@ public class OrderServiceImpl implements OrderService {
    * @param originalOrder
    * @return the original order updated
    */
-  private OrderDto refreshOrderDto(OrderDto originalOrder) {
+  private Order refreshOrderDto(OrderDto originalOrder) {
     LOGGER.debug("Refreshing orderDto {}", originalOrder);
-    OrderDto order = new OrderDto();
-    BeanUtils.copyProperties(originalOrder, order);
-    // Refresh DTO, update product with the last copy from DB and Update the price
-    order.getItems().forEach(item -> {
-      item.setProduct(productService.findProductById(item.getProduct().getId()));
-      BigDecimal updatedCost = item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity()));
-      item.setCost(updatedCost);
+    Order order = modelMapper.map(originalOrder, Order.class);
+    order.getItems().clear();
+    originalOrder.getItems().forEach(itemDto -> {
+      Product product = productService.findProductEntityById(itemDto.getProduct().getId());
+      BigDecimal updatedCost = product.getPrice().multiply(new BigDecimal(itemDto.getQuantity()));
+      order.getItems().add(new OrderItem(itemDto.getId(), order, product, itemDto.getQuantity(), updatedCost));
     });
     BigDecimal updatedTotalCost =
-        new BigDecimal(order.getItems().stream().mapToDouble(item -> item.getCost().doubleValue()).sum()).setScale(2,
+        new BigDecimal(order.getItems().stream().mapToDouble(item -> item.getCost().doubleValue()).sum()).setScale(3,
             RoundingMode.HALF_EVEN);
     order.setTotal(updatedTotalCost);
-    LOGGER.debug("Order updated {}", order);
     return order;
   }
 

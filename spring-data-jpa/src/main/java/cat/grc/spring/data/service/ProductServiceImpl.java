@@ -33,7 +33,7 @@ import cat.grc.spring.data.repository.ProductRepository;
  *
  */
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements ProductService, ProductServicePkg {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
@@ -164,6 +164,12 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional(readOnly = true)
   public ProductDto findProductById(Long id) {
+    return modelMapper.map(findProductEntityById(id), ProductDto.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Product findProductEntityById(Long id) {
     LOGGER.debug("Finding product by id={}", id);
     Assert.notNull(id);
     Product entity = productRepository.findOne(id);
@@ -172,7 +178,7 @@ public class ProductServiceImpl implements ProductService {
       LOGGER.warn(msg);
       throw new ResourceNotFoundException(msg);
     }
-    return modelMapper.map(entity, ProductDto.class);
+    return entity;
   }
 
   /*

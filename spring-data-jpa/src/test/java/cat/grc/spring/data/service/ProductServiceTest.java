@@ -152,10 +152,11 @@ public class ProductServiceTest {
   @Test
   public void testDeleteCategory() {
     Long categoryId = 1L;
-    when(productCategoryRepository.exists(eq(categoryId))).thenReturn(true);
+    ProductCategory productCategory = mock(ProductCategory.class);
+    when(productCategoryRepository.findOne(eq(categoryId))).thenReturn(productCategory);
     service.deleteCategory(categoryId);
     verify(productCategoryRepository).delete(eq(categoryId));
-    verify(productCategoryRepository).exists(eq(categoryId));
+    verify(productCategoryRepository).findOne(eq(categoryId));
     verifyNoMoreInteractions(productCategoryRepository);
     verifyZeroInteractions(productRepository);
   }

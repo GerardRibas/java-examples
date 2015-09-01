@@ -54,7 +54,7 @@ public class OrderServiceTest {
   private OrderRepository orderRepository;
 
   @Mock
-  private ProductService productService;
+  private ProductServicePkg productService;
 
   @Before
   public void before() {
@@ -109,10 +109,10 @@ public class OrderServiceTest {
 
   @Test
   public void testAddNewOrder() {
-    OrderDto order = new OrderDto(null, 1L, new Date(), new BigDecimal("11.33"));
-    ProductDto product = new ProductDto(1L, null, null, "Some Cool Product", new BigDecimal("11.33"), "blue", "10x10",
+    OrderDto order = new OrderDto(null, 1L, new Date(), new BigDecimal("11.330"));
+    ProductDto product = new ProductDto(1L, null, null, "Some Cool Product", new BigDecimal("11.330"), "blue", "10x10",
         "Some cool product description");
-    OrderItemDto item = new OrderItemDto(null, null, product, 1L, new BigDecimal("11.33"));
+    OrderItemDto item = new OrderItemDto(null, null, product, 1L, new BigDecimal("11.330"));
     order.setItems(Arrays.asList(item));
 
 
@@ -129,7 +129,7 @@ public class OrderServiceTest {
 
     OrderDto expectedOrderDto = new OrderDto(savedEntity.getId(), savedEntity.getCustomer().getId(),
         savedEntity.getPlaced(), savedEntity.getTotal());
-    when(productService.findProductById(eq(item.getProduct().getId()))).thenReturn(product);
+    when(productService.findProductEntityById(eq(item.getProduct().getId()))).thenReturn(productEntity);
     when(orderRepository.save(eq(entity))).thenReturn(savedEntity);
 
     OrderDto savedDto = service.addOrder(order);
@@ -138,7 +138,7 @@ public class OrderServiceTest {
     assertNull("Expected no items on the returned object", savedDto.getItems());
 
     verify(orderRepository).save(eq(entity));
-    verify(productService).findProductById(eq(product.getId()));
+    verify(productService).findProductEntityById(eq(product.getId()));
     verifyNoMoreInteractions(orderRepository);
     verifyNoMoreInteractions(productService);
   }
@@ -154,10 +154,10 @@ public class OrderServiceTest {
 
   @Test
   public void testUpdateOrder() {
-    OrderDto order = new OrderDto(1L, 1L, new Date(), new BigDecimal("11.33"));
-    ProductDto product = new ProductDto(1L, null, null, "Some Cool Product", new BigDecimal("11.33"), "blue", "10x10",
+    OrderDto order = new OrderDto(1L, 1L, new Date(), new BigDecimal("11.330"));
+    ProductDto product = new ProductDto(1L, null, null, "Some Cool Product", new BigDecimal("11.330"), "blue", "10x10",
         "Some cool product description");
-    OrderItemDto item = new OrderItemDto(1L, order.getId(), product, 1L, new BigDecimal("11.33"));
+    OrderItemDto item = new OrderItemDto(1L, order.getId(), product, 1L, new BigDecimal("11.330"));
     order.setItems(Arrays.asList(item));
 
 
@@ -172,6 +172,7 @@ public class OrderServiceTest {
     when(productService.findProductById(eq(item.getProduct().getId()))).thenReturn(product);
     when(orderRepository.exists(eq(order.getId()))).thenReturn(true);
     when(orderRepository.save(eq(entity))).thenReturn(entity);
+    when(productService.findProductEntityById(eq(product.getId()))).thenReturn(productEntity);
 
     OrderDto updatedDto = service.updateOrder(order);
     assertNotNull("Expected an updated order", updatedDto);
@@ -180,7 +181,7 @@ public class OrderServiceTest {
 
     verify(orderRepository).exists(eq(order.getId()));
     verify(orderRepository).save(eq(entity));
-    verify(productService).findProductById(eq(product.getId()));
+    verify(productService).findProductEntityById(eq(product.getId()));
     verifyNoMoreInteractions(orderRepository);
     verifyNoMoreInteractions(productService);
   }
