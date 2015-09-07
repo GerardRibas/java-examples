@@ -30,34 +30,34 @@ public class CustomerDto implements Serializable {
   private String phoneNumber;
 
   private String address;
-  
+
   public CustomerDto() {
-  
+    // Default Constructor
   }
 
   public CustomerDto(Long id, String firstName, String middleName, String lastName, Gender gender, String email,
-		String phoneNumber, String address) {
-	super();
-	this.id = id;
-	this.firstName = firstName;
-	this.middleName = middleName;
-	this.lastName = lastName;
-	this.gender = gender;
-	this.email = email;
-	this.phoneNumber = phoneNumber;
-	this.address = address;
-}
+      String phoneNumber, String address) {
+    super();
+    this.id = id;
+    this.firstName = firstName;
+    this.middleName = middleName;
+    this.lastName = lastName;
+    this.gender = gender;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.address = address;
+  }
 
 
 
-public Long getId() {
+  public Long getId() {
     return id;
   }
 
   public void setId(Long id) {
     this.id = id;
   }
-  
+
   public String getFirstName() {
     return firstName;
   }

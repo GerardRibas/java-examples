@@ -33,6 +33,16 @@ public class TransactionType implements Serializable {
 
   private Collection<FinancialTransaction> transactions;
 
+  public TransactionType() {
+    // Default Constructor
+  }
+
+  public TransactionType(Long code, String description) {
+    super();
+    this.code = code;
+    this.description = description;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "TRANSACTION_TYPE_CODE")

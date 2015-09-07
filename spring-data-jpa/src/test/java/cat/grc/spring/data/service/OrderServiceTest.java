@@ -19,11 +19,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.verification.Times;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,9 +40,11 @@ import cat.grc.spring.data.entity.Invoice;
 import cat.grc.spring.data.entity.Order;
 import cat.grc.spring.data.entity.OrderItem;
 import cat.grc.spring.data.entity.Product;
+import cat.grc.spring.data.entity.ProductCategory;
 import cat.grc.spring.data.exception.OrderWithInvoicesException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
+import cat.grc.spring.data.repository.OrderItemRepository;
 import cat.grc.spring.data.repository.OrderRepository;
 
 /**
@@ -56,6 +61,9 @@ public class OrderServiceTest {
   @Mock
   private ProductServicePkg productService;
 
+  @Mock
+  private OrderItemRepository orderItemRepository;
+
   @Before
   public void before() {
     MockitoAnnotations.initMocks(this);
@@ -63,6 +71,7 @@ public class OrderServiceTest {
     service.setOrderRepository(orderRepository);
     service.setModelMapper(new EntityManagerConfiguration().modelMapper());
     service.setProductService(productService);
+    service.setOrderItemRepository(orderItemRepository);
   }
 
   @Test
@@ -120,12 +129,12 @@ public class OrderServiceTest {
     Product productEntity = new Product(product.getId(), null, null, product.getName(), product.getPrice(),
         product.getColor(), product.getSize(), product.getDescription());
     OrderItem itemEntity = new OrderItem(null, null, productEntity, item.getQuantity(), item.getCost());
-    entity.setItems(Arrays.asList(itemEntity));
+    entity.setItems(new HashSet<>(Arrays.asList(itemEntity)));
 
     Order savedEntity = new Order(1L, new Customer(1L), order.getPlaced(), order.getTotal());
     OrderItem savedItemEntity =
         new OrderItem(1L, entity, new Product(item.getProduct().getId()), item.getQuantity(), item.getCost());
-    savedEntity.setItems(Arrays.asList(savedItemEntity));
+    savedEntity.setItems(new HashSet<>(Arrays.asList(savedItemEntity)));
 
     OrderDto expectedOrderDto = new OrderDto(savedEntity.getId(), savedEntity.getCustomer().getId(),
         savedEntity.getPlaced(), savedEntity.getTotal());
@@ -165,7 +174,7 @@ public class OrderServiceTest {
     Product productEntity = new Product(product.getId(), null, null, product.getName(), product.getPrice(),
         product.getColor(), product.getSize(), product.getDescription());
     OrderItem itemEntity = new OrderItem(item.getId(), entity, productEntity, item.getQuantity(), item.getCost());
-    entity.setItems(Arrays.asList(itemEntity));
+    entity.setItems(new HashSet<>(Arrays.asList(itemEntity)));
 
     OrderDto expectedOrderDto =
         new OrderDto(entity.getId(), entity.getCustomer().getId(), entity.getPlaced(), entity.getTotal());
@@ -233,6 +242,164 @@ public class OrderServiceTest {
 
     when(orderRepository.findOne(eq(orderId))).thenReturn(order);
     service.deleteOrder(orderId);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testFindItemsByOrderId() {
+    Long orderId = 1L;
+    int page = 1;
+    int size = 15;
+    Pageable pageable = new PageRequest(page, size);
+    Page<OrderItem> itemsPage = mock(Page.class);
+    OrderItem orderItem = new OrderItem();
+    when(orderItemRepository.findByOrder(eq(orderId), eq(pageable))).thenReturn(itemsPage);
+    when(itemsPage.getContent()).thenReturn(Arrays.asList(orderItem));
+    Collection<OrderItemDto> items = service.findItemsByOrderId(orderId, page, size);
+    assertFalse("Expected a collection with an item on it", items.isEmpty());
+    verify(orderItemRepository).findByOrder(eq(orderId), eq(pageable));
+  }
+
+  @Test
+  public void testAddOrderItem() {
+    OrderItemDto newItem = new OrderItemDto(null, 1L, new ProductDto(1L), 1L, new BigDecimal("10.000"));
+
+    Product product = new Product(1L, null, new ProductCategory(1L, "Pets", new Float("0.2")), "Some Name",
+        new BigDecimal("10.000"), "Blue", "10x10", "Some Desc");
+    Order orderToSave = new Order(1L, new Customer(1L), new Date(), new BigDecimal(("10.000")));
+    Set<OrderItem> itemsToSave = new HashSet<>();
+    itemsToSave.add(new OrderItem(null, orderToSave, product, 1L, newItem.getCost()));
+    orderToSave.setItems(itemsToSave);
+
+    Order orderSaved = new Order(1L, new Customer(1L), new Date(), new BigDecimal(("20.000")));
+    Set<OrderItem> itemsSaved = new HashSet<>();
+    itemsSaved.add(new OrderItem(1L, orderSaved, product, 1L, newItem.getCost()));
+    orderSaved.setItems(itemsSaved);
+
+    when(orderRepository.findOne(eq(newItem.getOrderId()))).thenReturn(orderToSave);
+    when(orderRepository.exists(eq(newItem.getOrderId()))).thenReturn(true);
+    when(productService.findProductEntityById(eq(product.getId()))).thenReturn(product);
+    when(orderRepository.save(eq(orderToSave))).thenReturn(orderSaved);
+
+    OrderItemDto item = service.addOrderItem(newItem);
+    assertNotNull("Expeted an item", item);
+    assertEquals("Expeted an itemId created", 1L, item.getId().longValue());
+
+    verify(orderRepository).findOne(eq(newItem.getOrderId()));
+    verify(orderRepository).save(eq(orderToSave));
+  }
+
+  @Test(expected = ResourceAlreadyExistsException.class)
+  public void testAddOrderItem_ResourceAlreadyExistsException() {
+    OrderItemDto newItem = new OrderItemDto(1L, 1L, new ProductDto(1L), 1L, new BigDecimal("10.000"));
+    when(orderItemRepository.exists(eq(newItem.getId()))).thenReturn(true);
+    service.addOrderItem(newItem);
+  }
+
+  @Test
+  public void testUpdateOrderItem() {
+    OrderItemDto itemToUpdate = new OrderItemDto(1L, 1L, new ProductDto(1L), 2L, new BigDecimal("20.000"));
+
+    Order order = new Order(1L, new Customer(1L), new Date(), new BigDecimal(("10.000")));
+    Set<OrderItem> items = new HashSet<>();
+    Product product = new Product(1L, null, new ProductCategory(1L, "Pets", new Float("0.2")), "Some Name",
+        new BigDecimal("10.000"), "Blue", "10x10", "Some Desc");
+    items.add(new OrderItem(1L, order, product, 1L, new BigDecimal("10.000")));
+    order.setItems(items);
+
+    Order orderToSave = new Order(1L, new Customer(1L), order.getPlaced(), new BigDecimal(("20.000")));
+    Set<OrderItem> itemsToSave = new HashSet<>();
+    itemsToSave.add(new OrderItem(1L, orderToSave, product, 2L, new BigDecimal("20.000")));
+    orderToSave.setItems(itemsToSave);
+
+    when(productService.findProductEntityById(eq(product.getId()))).thenReturn(product);
+    when(orderRepository.findOne(eq(itemToUpdate.getOrderId()))).thenReturn(order);
+    when(orderRepository.exists(eq(itemToUpdate.getOrderId()))).thenReturn(true);
+    when(orderItemRepository.exists(eq(itemToUpdate.getId()))).thenReturn(true);
+    when(orderRepository.save(orderToSave)).thenReturn(orderToSave);
+    OrderItemDto dtoUpdated = service.updateOrderItem(itemToUpdate);
+    assertNotNull("Expected a returned order item", dtoUpdated);
+
+    verify(productService).findProductEntityById(eq(product.getId()));
+    verify(orderRepository).findOne(eq(itemToUpdate.getOrderId()));
+    verify(orderRepository).save(eq(orderToSave));
+  }
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void testUpdateOrderItem_ResourceNotFoundException() {
+    OrderItemDto itemToUpdate = new OrderItemDto(1L, 1L, new ProductDto(1L), 2L, new BigDecimal("20.000"));
+    when(orderRepository.findOne(eq(itemToUpdate.getId()))).thenReturn(mock(Order.class));
+    service.updateOrderItem(itemToUpdate);
+  }
+
+
+  @Test
+  public void testUpdateOrderItemMultipleItems() {
+    OrderItemDto itemToUpdate = new OrderItemDto(1L, 1L, new ProductDto(1L), 2L, new BigDecimal("20.000"));
+
+    Order order = new Order(1L, new Customer(1L), new Date(), new BigDecimal(("20.000")));
+    Set<OrderItem> items = new HashSet<>();
+    Product product = new Product(1L, null, new ProductCategory(1L, "Pets", new Float("0.2")), "Some Name",
+        new BigDecimal("10.000"), "Blue", "10x10", "Some Desc");
+    items.add(new OrderItem(1L, order, product, 1L, new BigDecimal("10.000")));
+    items.add(new OrderItem(2L, order, product, 1L, new BigDecimal("10.000")));
+    order.setItems(items);
+
+    Order orderToSave = new Order(1L, new Customer(1L), order.getPlaced(), new BigDecimal(("30.000")));
+    Set<OrderItem> itemsToSave = new HashSet<>();
+    itemsToSave.add(new OrderItem(2L, orderToSave, product, 1L, new BigDecimal("10.000")));
+    itemsToSave.add(new OrderItem(1L, orderToSave, product, 2L, new BigDecimal("20.000")));
+    orderToSave.setItems(itemsToSave);
+
+    when(productService.findProductEntityById(eq(product.getId()))).thenReturn(product);
+    when(orderRepository.findOne(eq(itemToUpdate.getOrderId()))).thenReturn(order);
+    when(orderRepository.exists(eq(itemToUpdate.getOrderId()))).thenReturn(true);
+    when(orderItemRepository.exists(eq(itemToUpdate.getId()))).thenReturn(true);
+    when(orderRepository.save(eq(orderToSave))).thenReturn(orderToSave);
+    OrderItemDto dtoUpdated = service.updateOrderItem(itemToUpdate);
+    assertNotNull("Expected a returned order item", dtoUpdated);
+
+    verify(productService, new Times(2)).findProductEntityById(eq(product.getId()));
+    verify(orderRepository).findOne(eq(itemToUpdate.getOrderId()));
+    verify(orderRepository).save(eq(orderToSave));
+  }
+
+  @Test
+  public void testDeleteOrderItem() {
+    Long id = 1L;
+
+    Order order = new Order(1L, new Customer(1L), new Date(), new BigDecimal(("20.000")));
+    Set<OrderItem> items = new HashSet<>();
+    Product product = new Product(1L, null, new ProductCategory(1L, "Pets", new Float("0.2")), "Some Name",
+        new BigDecimal("10.000"), "Blue", "10x10", "Some Desc");
+    OrderItem item = new OrderItem(1L, order, product, 1L, new BigDecimal("10.000"));
+    items.add(new OrderItem(1L, order, product, 1L, new BigDecimal("10.000")));
+    items.add(new OrderItem(2L, order, product, 1L, new BigDecimal("10.000")));
+    order.setItems(items);
+
+    Order orderToSave = new Order(1L, new Customer(1L), order.getPlaced(), new BigDecimal(("10.000")));
+    Set<OrderItem> itemsToSave = new HashSet<>();
+    itemsToSave.add(new OrderItem(2L, order, product, 1L, new BigDecimal("10.000")));
+    orderToSave.setItems(itemsToSave);
+
+    when(orderItemRepository.findOne(eq(id))).thenReturn(item);
+    when(orderRepository.exists(eq(order.getId()))).thenReturn(true);
+    when(orderRepository.findOne(eq(order.getId()))).thenReturn(order);
+    when(productService.findProductEntityById(eq(product.getId()))).thenReturn(product);
+    when(orderRepository.save(eq(orderToSave))).thenReturn(orderToSave);
+    service.deleteOrderItem(id);
+
+    verify(orderItemRepository).findOne(eq(id));
+    verify(orderRepository).findOne(eq(order.getId()));
+    verify(productService).findProductEntityById(eq(product.getId()));
+    verify(orderRepository).save(eq(orderToSave));
+  }
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void testDeleteOrderItem_ResourceNotFoundException() {
+    Long id = 99999L;
+    when(orderItemRepository.findOne(eq(id))).thenReturn(null);
+    service.deleteOrderItem(id);
   }
 
 }

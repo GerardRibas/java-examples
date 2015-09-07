@@ -46,7 +46,9 @@ public class Customer implements Serializable {
 
   private Collection<Order> orders;
 
-  public Customer() {}
+  public Customer() {
+    // Default Constructor
+  }
 
   public Customer(Long id) {
     super();

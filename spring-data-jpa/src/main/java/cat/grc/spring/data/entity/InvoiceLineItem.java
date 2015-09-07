@@ -48,21 +48,22 @@ public class InvoiceLineItem implements Serializable {
   private BigDecimal derivedTotalCost;
 
   public InvoiceLineItem() {
-
+    // Default Constructor
   }
 
   public InvoiceLineItem(OrderItem item, Invoice invoice) {
     super();
     this.item = item;
+    this.id = item.getId();
     this.invoice = invoice;
     this.derivedProductCost = item.getCost();
     this.product = item.getProduct();
     this.productTitle = item.getProduct().getName();
     this.price = item.getProduct().getPrice();
     this.derivedVatPayable = item.getCost().multiply(new BigDecimal(item.getProduct().getCategory().getVatRating()))
-        .setScale(2, RoundingMode.HALF_EVEN);
+        .setScale(3, RoundingMode.HALF_EVEN);
     this.quantity = item.getQuantity();
-    this.derivedVatPayable = derivedProductCost.multiply(derivedVatPayable).setScale(2, RoundingMode.HALF_EVEN);
+    this.derivedTotalCost = price.add(derivedVatPayable);
   }
 
 
@@ -190,7 +191,5 @@ public class InvoiceLineItem implements Serializable {
         .add("derivedProductCost", derivedProductCost).add("derivedVatPayable", derivedVatPayable)
         .add("derivedTotalCost", derivedTotalCost).toString();
   }
-
-
 
 }

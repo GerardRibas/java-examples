@@ -48,7 +48,7 @@ public class Product implements Serializable {
   private Collection<InvoiceLineItem> invoiceItems;
 
   public Product() {
-
+    // Default Constructor
   }
 
   public Product(Long id) {
@@ -185,7 +185,7 @@ public class Product implements Serializable {
   public String toString() {
     return MoreObjects.toStringHelper(this).add("id", id).add("parent", parent).add("category", category)
         .add("name", name).add("price", price).add("color", color).add("size", size).add("description", description)
-        .add("orderItems", orderItems).add("invoiceItems", invoiceItems).toString();
+        .toString();
   }
 
 

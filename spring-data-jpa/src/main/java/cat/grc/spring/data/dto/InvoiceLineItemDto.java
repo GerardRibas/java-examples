@@ -37,10 +37,6 @@ public class InvoiceLineItemDto implements Serializable {
 
   private BigDecimal derivedTotalCost;
 
-  public InvoiceLineItemDto() {
-
-  }
-
   public Long getId() {
     return id;
   }

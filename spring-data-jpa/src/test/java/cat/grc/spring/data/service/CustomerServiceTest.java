@@ -249,17 +249,19 @@ public class CustomerServiceTest {
     AccountDto savedAccountDto = new AccountDto(savedAccount.getId(), savedAccount.getCustomer().getId(),
         savedAccount.getOpened(), savedAccount.getName());
     when(accountRepository.save(eq(account))).thenReturn(savedAccount);
+    when(customerRepository.exists(eq(accountDto.getCustomerId()))).thenReturn(true);
     AccountDto savedDto = service.addAccount(accountDto);
     assertEquals("Dto are not equals", savedAccountDto, savedDto);
     verify(accountRepository).save(eq(account));
     verify(accountRepository, new Times(0)).exists(anyLong());
-    verifyZeroInteractions(customerRepository);
+    verify(customerRepository).exists(eq(accountDto.getCustomerId()));
   }
 
   @Test(expected = ResourceAlreadyExistsException.class)
   public void testAddAccount_ResourceAlreadyExistsException() {
     AccountDto accountDto = new AccountDto(1L, 1L, new Date(), "Some account name");
     when(accountRepository.exists(eq(accountDto.getId()))).thenReturn(true);
+    when(customerRepository.exists(eq(accountDto.getCustomerId()))).thenReturn(true);
     service.addAccount(accountDto);
   }
 
@@ -269,17 +271,19 @@ public class CustomerServiceTest {
     Account account = new Account(accountDto.getId(), new Customer(accountDto.getCustomerId()), accountDto.getOpened(),
         accountDto.getName());
     when(accountRepository.exists(eq(accountDto.getId()))).thenReturn(true);
+    when(customerRepository.exists(eq(accountDto.getCustomerId()))).thenReturn(true);
     when(accountRepository.save(eq(account))).thenReturn(account);
     AccountDto updatedDto = service.updateAccount(accountDto);
     assertEquals("Dto are not equals", accountDto, updatedDto);
     verify(accountRepository).save(eq(account));
     verify(accountRepository).exists(eq(accountDto.getId()));
-    verifyZeroInteractions(customerRepository);
+    verify(customerRepository).exists(eq(accountDto.getCustomerId()));
   }
 
   @Test(expected = ResourceNotFoundException.class)
   public void testUpdateAccount_ResourceNotFoundException() {
     AccountDto accountDto = new AccountDto(1L, 1L, new Date(), "Some account name");
+    when(customerRepository.exists(eq(accountDto.getCustomerId()))).thenReturn(true);
     when(accountRepository.exists(eq(accountDto.getId()))).thenReturn(false);
     service.updateAccount(accountDto);
   }

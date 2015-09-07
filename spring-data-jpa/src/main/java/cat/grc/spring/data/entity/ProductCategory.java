@@ -33,7 +33,7 @@ public class ProductCategory implements Serializable {
   private Collection<Product> products;
 
   public ProductCategory() {
-
+    // Default Constructor
   }
 
   public ProductCategory(Long code, String description, Float vatRating) {
@@ -99,7 +99,7 @@ public class ProductCategory implements Serializable {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this).add("code", code).add("description", description)
-        .add("vatRating", vatRating).add("products", products).toString();
+        .add("vatRating", vatRating).toString();
   }
 
 }

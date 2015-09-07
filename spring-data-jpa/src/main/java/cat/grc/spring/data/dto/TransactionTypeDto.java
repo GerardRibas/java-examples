@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package cat.grc.spring.data.dto;
 
 import java.io.Serializable;
@@ -9,7 +12,7 @@ import com.google.common.base.Objects;
  * @author Gerard Ribas (gerard.ribas.canals@gmail.com)
  *
  */
-public class ProductCategoryDto implements Serializable {
+public class TransactionTypeDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -17,17 +20,14 @@ public class ProductCategoryDto implements Serializable {
 
   private String description;
 
-  private Float vatRating;
-
-  public ProductCategoryDto() {
+  public TransactionTypeDto() {
     // Default Constructor
   }
 
-  public ProductCategoryDto(Long code, String description, Float vatRating) {
+  public TransactionTypeDto(Long code, String description) {
     super();
     this.code = code;
     this.description = description;
-    this.vatRating = vatRating;
   }
 
   public Long getCode() {
@@ -46,33 +46,23 @@ public class ProductCategoryDto implements Serializable {
     this.description = description;
   }
 
-  public Float getVatRating() {
-    return vatRating;
-  }
-
-  public void setVatRating(Float vatRating) {
-    this.vatRating = vatRating;
-  }
-
   @Override
   public final int hashCode() {
-    return Objects.hashCode(code, description, vatRating);
+    return Objects.hashCode(code, description);
   }
 
   @Override
   public final boolean equals(Object object) {
-    if (object instanceof ProductCategoryDto) {
-      ProductCategoryDto that = (ProductCategoryDto) object;
-      return Objects.equal(this.code, that.code) && Objects.equal(this.description, that.description)
-          && Objects.equal(this.vatRating, that.vatRating);
+    if (object instanceof TransactionTypeDto) {
+      TransactionTypeDto that = (TransactionTypeDto) object;
+      return Objects.equal(this.code, that.code) && Objects.equal(this.description, that.description);
     }
     return false;
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("code", code).add("description", description)
-        .add("vatRating", vatRating).toString();
+    return MoreObjects.toStringHelper(this).add("code", code).add("description", description).toString();
   }
 
 }

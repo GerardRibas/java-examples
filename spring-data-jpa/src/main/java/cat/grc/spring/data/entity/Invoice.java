@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Invoice implements Serializable {
   private Collection<InvoiceLineItem> lines;
 
   public Invoice() {
-
+    // Default Constructor
   }
 
   public Invoice(Order order, Date created) {
@@ -91,7 +92,7 @@ public class Invoice implements Serializable {
     this.transactions = transactions;
   }
 
-  @OneToMany(mappedBy = "invoice")
+  @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
   public Collection<InvoiceLineItem> getLines() {
     return lines;
   }

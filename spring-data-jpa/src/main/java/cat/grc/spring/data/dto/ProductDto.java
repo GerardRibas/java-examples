@@ -31,7 +31,7 @@ public class ProductDto implements Serializable {
   private String description;
 
   public ProductDto() {
-
+    // Default Constructor
   }
 
   public ProductDto(Long id) {

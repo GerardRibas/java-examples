@@ -24,7 +24,7 @@ public class InvoiceDto implements Serializable {
   private Collection<InvoiceLineItemDto> lines;
 
   public InvoiceDto() {
-
+    // Default Constructor
   }
 
   public InvoiceDto(Long orderId, Date created) {

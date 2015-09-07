@@ -165,6 +165,55 @@ public class OrderServiceTestIT {
     service.deleteOrder(99999L);
   }
 
+  @Test
+  public void testFindItemsByOrderId() {
+    Collection<OrderItemDto> items = service.findItemsByOrderId(1L, 0, 15);
+    assertFalse("Expected items for this order", items.isEmpty());
+  }
 
+  @Test
+  @ExpectedDatabase(value = "OrderServiceTestIT.testAddOrderItem.expected.xml",
+      assertionMode = DatabaseAssertionMode.NON_STRICT)
+  public void testAddOrderItem() {
+    OrderItemDto newItem = new OrderItemDto(null, 1L, new ProductDto(2L), 1L, new BigDecimal("10.000"));
+    OrderItemDto savedItem = service.addOrderItem(newItem);
+    entityManager.flush();
+    assertNotNull("Expected a saved item", savedItem);
+  }
+
+  @Test(expected = ResourceAlreadyExistsException.class)
+  public void testAddOrderItem_ResourceAlreadyExistsException() {
+    OrderItemDto newItem = new OrderItemDto(1L, 1L, new ProductDto(2L), 1L, new BigDecimal("10.000"));
+    service.addOrderItem(newItem);
+  }
+
+  @Test
+  @ExpectedDatabase(value = "OrderServiceTestIT.testUpdateOrderItem.expected.xml",
+      assertionMode = DatabaseAssertionMode.NON_STRICT)
+  public void testUpdateOrderItem() {
+    OrderItemDto item = new OrderItemDto(1L, 1L, new ProductDto(2L), 1L, new BigDecimal("10.000"));
+    OrderItemDto itemUpdated = service.updateOrderItem(item);
+    entityManager.flush();
+    assertEquals("Expected the same item id returned", item.getId(), itemUpdated.getId());
+  }
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void testUpdateOrderItem_ResourceNotFoundException() {
+    OrderItemDto item = new OrderItemDto(99999L, 1L, new ProductDto(2L), 1L, new BigDecimal("10.000"));
+    service.updateOrderItem(item);
+  }
+
+  @Test
+  @ExpectedDatabase(value = "OrderServiceTestIT.testDeleteOrderItem.expected.xml",
+      assertionMode = DatabaseAssertionMode.NON_STRICT)
+  public void testDeleteOrderItem() {
+    service.deleteOrderItem(1L);
+    entityManager.flush();
+  }
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void testDeleteOrderItem_() {
+    service.deleteOrderItem(9999999L);
+  }
 
 }

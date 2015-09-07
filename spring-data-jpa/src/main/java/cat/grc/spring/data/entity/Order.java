@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,10 +40,10 @@ public class Order implements Serializable {
 
   private Collection<Invoice> invoices;
 
-  private Collection<OrderItem> items;
+  private Set<OrderItem> items;
 
   public Order() {
-
+    // Default Constructor
   }
 
   public Order(Long id, Customer customer, Date placed, BigDecimal total) {
@@ -102,11 +103,11 @@ public class Order implements Serializable {
   }
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-  public Collection<OrderItem> getItems() {
+  public Set<OrderItem> getItems() {
     return items;
   }
 
-  public void setItems(Collection<OrderItem> items) {
+  public void setItems(Set<OrderItem> items) {
     this.items = items;
   }
 
@@ -128,8 +129,8 @@ public class Order implements Serializable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("id", id).add("customer", customer).add("placed", placed)
-        .add("total", total).add("invoices", invoices).add("items", items).toString();
+    return MoreObjects.toStringHelper(this).add("id", id).add("customerId", customer == null ? null : customer.getId())
+        .add("placed", placed).add("total", total).add("invoices", invoices).add("items", items).toString();
   }
 
 }

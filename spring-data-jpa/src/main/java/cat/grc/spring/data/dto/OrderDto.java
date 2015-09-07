@@ -27,7 +27,7 @@ public class OrderDto implements Serializable {
   private Collection<OrderItemDto> items;
 
   public OrderDto() {
-
+    // Default Constructor
   }
 
   public OrderDto(Long id, Long customerId, Date placed, BigDecimal total) {

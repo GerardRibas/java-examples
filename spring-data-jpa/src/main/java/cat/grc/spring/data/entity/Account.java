@@ -41,7 +41,7 @@ public class Account implements Serializable {
   private Collection<FinancialTransaction> transactions;
 
   public Account() {
-
+    // Default Constructor
   }
 
   public Account(Long id, Customer customer, Date opened, String name) {
@@ -118,8 +118,8 @@ public class Account implements Serializable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("id", id).add("customer", customer).add("opened", opened)
-        .add("name", name).add("transactions", transactions).toString();
+    return MoreObjects.toStringHelper(this).add("id", id).add("customerId", customer == null ? null : customer.getId())
+        .add("opened", opened).add("name", name).add("transactions", transactions).toString();
   }
 
 

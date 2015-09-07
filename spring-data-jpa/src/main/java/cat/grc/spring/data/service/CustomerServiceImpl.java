@@ -166,6 +166,7 @@ public class CustomerServiceImpl implements CustomerService {
   public AccountDto addAccount(AccountDto account) {
     Assert.notNull(account);
     Assert.notNull(account.getCustomerId());
+    customerMustExists(account.getCustomerId());
     boolean exists = account.getId() == null ? false : accountRepository.exists(account.getId());
     if (exists) {
       String msg = String.format("AccountId=%s already exists", account.getId());
@@ -187,6 +188,7 @@ public class CustomerServiceImpl implements CustomerService {
     LOGGER.debug("Updating account {}", account);
     Assert.notNull(account);
     accountMustExists(account.getId());
+    customerMustExists(account.getCustomerId());
     return modelMapper.map(accountRepository.save(modelMapper.map(account, Account.class)), AccountDto.class);
   }
 

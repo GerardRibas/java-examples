@@ -42,7 +42,7 @@ public class OrderItem implements Serializable {
   private BigDecimal cost;
 
   public OrderItem() {
-
+    // Default Constructor
   }
 
   public OrderItem(Long id, Order order, Product product, Long quantity, BigDecimal cost) {
@@ -114,7 +114,8 @@ public class OrderItem implements Serializable {
 
   @Override
   public final int hashCode() {
-    return Objects.hashCode(id, order == null ? null : order.getId(), product, invoiceLineItem, quantity, cost);
+    return Objects.hashCode(id, order == null ? null : order.getId(), product == null ? null : product.getId(),
+        invoiceLineItem, quantity, cost);
   }
 
   @Override
@@ -124,11 +125,15 @@ public class OrderItem implements Serializable {
       return Objects.equal(this.id, that.id)
           && Objects.equal(this.order == null ? null : this.order.getId(),
               that.order == null ? null : that.order.getId())
-          && Objects.equal(this.product, that.product) && Objects.equal(this.invoiceLineItem, that.invoiceLineItem)
-          && Objects.equal(this.quantity, that.quantity) && Objects.equal(this.cost, that.cost);
+          && Objects.equal(this.product == null ? null : product.getId(),
+              that.product == null ? null : that.product.getId())
+          && Objects.equal(this.invoiceLineItem, that.invoiceLineItem) && Objects.equal(this.quantity, that.quantity)
+          && Objects.equal(this.cost, that.cost);
     }
     return false;
   }
+
+
 
   @Override
   public String toString() {

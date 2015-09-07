@@ -31,7 +31,7 @@ public class FinancialTransactionDto implements Serializable {
   private BigDecimal amount;
 
   public FinancialTransactionDto() {
-
+    // Default Constructor
   }
 
   public FinancialTransactionDto(Long id, Long accountId, Long invoiceNumber, Long typeCode, Date transactionDate,

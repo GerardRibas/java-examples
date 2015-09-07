@@ -42,7 +42,7 @@ public class FinancialTransaction implements Serializable {
   private BigDecimal amount;
 
   public FinancialTransaction() {
-
+    // Default Constructor
   }
 
   public FinancialTransaction(Long id, Account account, Invoice invoice, TransactionType type, Date transactionDate,

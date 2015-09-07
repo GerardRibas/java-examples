@@ -26,7 +26,7 @@ public class AccountDto implements Serializable {
   private String name;
 
   public AccountDto() {
-
+    // Default Constructor
   }
 
   public AccountDto(Long id, Long customerId, Date opened, String name) {

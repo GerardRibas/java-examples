@@ -32,6 +32,7 @@ import cat.grc.spring.data.dto.ProductCategoryDto;
 import cat.grc.spring.data.dto.ProductDto;
 import cat.grc.spring.data.entity.Product;
 import cat.grc.spring.data.entity.ProductCategory;
+import cat.grc.spring.data.exception.ProductCategoryHasProductsException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
 import cat.grc.spring.data.repository.ProductCategoryRepository;
@@ -159,6 +160,16 @@ public class ProductServiceTest {
     verify(productCategoryRepository).findOne(eq(categoryId));
     verifyNoMoreInteractions(productCategoryRepository);
     verifyZeroInteractions(productRepository);
+  }
+
+  @Test(expected = ProductCategoryHasProductsException.class)
+  public void testDeleteCategory_ProductCategoryHasProductsException() {
+    Long categoryId = 1L;
+    ProductCategory productCategory = mock(ProductCategory.class);
+    Product product = mock(Product.class);
+    when(productCategoryRepository.findOne(eq(categoryId))).thenReturn(productCategory);
+    when(productCategory.getProducts()).thenReturn(Arrays.asList(product));
+    service.deleteCategory(categoryId);
   }
 
   @Test(expected = ResourceNotFoundException.class)
