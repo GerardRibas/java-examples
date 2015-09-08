@@ -32,6 +32,7 @@
 
  <modules>
   <module>spring-data-jpa</module>
+  <module>spring-mvc-rest</module>
  </modules>
 
  <parent>
@@ -42,6 +43,11 @@
 
  <dependencyManagement>
   <dependencies>
+   <dependency>
+    <groupId>cat.grc.examples</groupId>
+    <artifactId>spring-data-jpa</artifactId>
+    <version>${project.version}</version>
+   </dependency>
    <dependency>
     <groupId>ch.qos.logback</groupId>
     <artifactId>logback-classic</artifactId>
