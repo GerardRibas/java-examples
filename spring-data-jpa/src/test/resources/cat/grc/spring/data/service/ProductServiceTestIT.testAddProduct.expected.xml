@@ -1,0 +1,12 @@
+<dataset>
+
+ <PRODUCTS PRODUCT_ID="1" PRODUCT_TYPE_CODE="1" PRODUCT_NAME="lacinia. Sed congue, elit sed" PRODUCT_PRICE="9.458"
+  PRODUCT_COLOR="Blue" PRODUCT_SIZE="10x10" PRODUCT_DESCRIPTION="Lorem ipsum dolor sit amet, consectetuer" />
+  
+  <PRODUCTS PRODUCT_ID="2" PRODUCT_TYPE_CODE="3" PRODUCT_NAME="lacinia. Sed congue, elit sed 2" PRODUCT_PRICE="9.458"
+  PRODUCT_COLOR="Blue" PRODUCT_SIZE="20x10" PRODUCT_DESCRIPTION="Lorem ipsum dolor sit amet, consectetuer" />
+  
+  <PRODUCTS PRODUCT_ID="3" PRODUCT_TYPE_CODE="1" PRODUCT_NAME="Aliquam ornare, libero at auctor ullamcorper, nisl" PRODUCT_PRICE="19.206"
+  PRODUCT_COLOR="Red" PRODUCT_SIZE="30x10" PRODUCT_DESCRIPTION="Lorem ipsum dolor sit amet, consectetuer adipiscing" />
+  
+</dataset>
