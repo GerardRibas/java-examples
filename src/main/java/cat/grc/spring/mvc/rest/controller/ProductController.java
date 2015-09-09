@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,31 +45,30 @@ public class ProductController {
 
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product, UriComponentsBuilder builder) {
-    LOGGER.debug("Creating product={}", product);
+    LOGGER.debug("Creating product={}", product);    
     ProductDto productSaved = service.addProduct(product);
     UriComponents uriComponents = builder.path("/products/{id}").buildAndExpand(productSaved.getId());
     HttpHeaders headers = new HttpHeaders();
     headers.setLocation(uriComponents.toUri());
     return new ResponseEntity<ProductDto>(productSaved, headers, HttpStatus.CREATED);
   }
-
+    
   @RequestMapping(value = "/{id}")
   public ProductDto findProduct(@PathVariable Long id) {
-    LOGGER.debug("Finding product by id={}", id);
-    return service.findProductById(id);
+	  LOGGER.debug("Finding product by id={}", id);
+	  return service.findProductById(id);
   }
-
+  
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   public ProductDto updateProduct(@PathVariable Long id, @RequestBody ProductDto product) {
-    LOGGER.debug("Updating product={} id={}", product, id);
-    return service.updateProduct(product);
+	  LOGGER.debug("Updating product={} id={}", product, id);
+	  return service.updateProduct(product);
   }
-
+  
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updateProduct(@PathVariable Long id) {
-    LOGGER.debug("Deleting product by given id={}", id);
-    service.deleteProduct(id);
+	  LOGGER.debug("Deleting product by given id={}", id);
+	  service.deleteProduct(id);
   }
 
   @Resource

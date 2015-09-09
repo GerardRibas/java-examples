@@ -29,7 +29,7 @@ public class ExceptionHandlerController {
   public ErrorResource handleResourceAlreadyExistsException(Exception ex) throws IOException {
     return new ErrorResource(Instant.now().getEpochSecond(), "E001", ex.getMessage());
   }
-
+  
   @ExceptionHandler(ResourceNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
