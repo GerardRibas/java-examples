@@ -5,6 +5,7 @@
   <groupId>cat.grc.examples</groupId>
   <artifactId>java-examples</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+  <relativePath>../pom.xml</relativePath>
  </parent>
  <artifactId>spring-data-jpa</artifactId>
 

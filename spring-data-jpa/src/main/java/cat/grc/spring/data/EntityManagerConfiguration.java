@@ -89,7 +89,7 @@ public class EntityManagerConfiguration {
   }
 
   @Bean
-  public SpringLiquibase springLiquibase(DataSource dataSource) {
+  public SpringLiquibase liquibase(DataSource dataSource) {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
     liquibase.setContexts(environment.getRequiredProperty(PROPERTY_NAME_LIQUIBASE_CONTEXTS));
