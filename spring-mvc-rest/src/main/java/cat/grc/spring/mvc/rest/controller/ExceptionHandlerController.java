@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import cat.grc.spring.data.exception.ProductCategoryHasProductsException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
 import cat.grc.spring.mvc.rest.ErrorResource;
@@ -35,6 +36,13 @@ public class ExceptionHandlerController {
   @ResponseBody
   public ErrorResource handleResourceNotFoundException(Exception ex) throws IOException {
     return new ErrorResource(Instant.now().getEpochSecond(), "E002", ex.getMessage());
+  }
+
+  @ExceptionHandler(ProductCategoryHasProductsException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ResponseBody
+  public ErrorResource handleProductCategoryHasProductsException(Exception ex) throws IOException {
+    return new ErrorResource(Instant.now().getEpochSecond(), "E003", ex.getMessage());
   }
 
 }

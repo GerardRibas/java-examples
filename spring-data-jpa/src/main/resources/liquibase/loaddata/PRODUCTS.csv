@@ -9,7 +9,7 @@ PRODUCT_ID|PRODUCT_TYPE_CODE|PRODUCT_NAME|PRODUCT_PRICE|PRODUCT_DESCRIPTION
 8|15|ornare, facilisis eget, ipsum. Donec|9.538|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor.
 9|8|et magnis dis|2.826|Lorem ipsum dolor sit amet, consectetuer adipiscing
 10|17|molestie tortor nibh sit amet orci. Ut sagittis|39.376|Lorem ipsum dolor sit amet, consectetuer adipiscing
-11|21|risus odio, auctor|64.707|Lorem ipsum dolor sit
+11|20|risus odio, auctor|64.707|Lorem ipsum dolor sit
 12|12|nibh enim, gravida sit amet, dapibus id,|7.587|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut nec urna et
 13|15|eget massa. Suspendisse eleifend. Cras sed leo. Cras vehicula|54.730|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor.
 14|6|eu dui.|2.748|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut nec urna et arcu
@@ -58,7 +58,7 @@ PRODUCT_ID|PRODUCT_TYPE_CODE|PRODUCT_NAME|PRODUCT_PRICE|PRODUCT_DESCRIPTION
 57|2|nunc sed libero. Proin sed|99.993|Lorem ipsum dolor
 58|4|nulla ante, iaculis nec, eleifend non, dapibus rutrum, justo.|54.382|Lorem ipsum dolor
 59|2|dictum cursus. Nunc mauris elit, dictum eu,|67.041|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing
-60|21|sollicitudin commodo ipsum. Suspendisse non leo. Vivamus nibh dolor, nonummy|34.809|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing
+60|20|sollicitudin commodo ipsum. Suspendisse non leo. Vivamus nibh dolor, nonummy|34.809|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing
 61|3|nec urna et arcu imperdiet ullamcorper.|61.000|Lorem ipsum dolor
 62|15|Integer in magna. Phasellus dolor elit, pellentesque|54.452|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut
 63|10|tristique senectus et netus|99.483|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut nec urna et arcu
@@ -92,7 +92,7 @@ PRODUCT_ID|PRODUCT_TYPE_CODE|PRODUCT_NAME|PRODUCT_PRICE|PRODUCT_DESCRIPTION
 91|12|dictum ultricies ligula. Nullam enim. Sed nulla ante, iaculis|75.056|Lorem ipsum
 92|1|vestibulum, neque sed dictum eleifend, nunc|89.460|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur
 93|16|dictum magna.|20.750|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing
-94|21|mattis ornare, lectus ante|61.266|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing lacus.
+94|20|mattis ornare, lectus ante|61.266|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing lacus.
 95|8|mi, ac mattis velit justo nec|40.829|Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut nec
 96|19|sed pede nec ante blandit viverra. Donec tempus,|54.562|Lorem ipsum dolor sit amet, consectetuer
 97|15|neque vitae semper egestas, urna justo faucibus lectus,|59.778|Lorem
