@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import cat.grc.spring.data.exception.AccountWithTransactionsException;
+import cat.grc.spring.data.exception.CustomerWithAccountsException;
+import cat.grc.spring.data.exception.CustomerWithOrdersException;
 import cat.grc.spring.data.exception.ProductCategoryHasProductsException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
@@ -43,6 +46,27 @@ public class ExceptionHandlerController {
   @ResponseBody
   public ErrorResource handleProductCategoryHasProductsException(Exception ex) throws IOException {
     return new ErrorResource(Instant.now().getEpochSecond(), "E003", ex.getMessage());
+  }
+
+  @ExceptionHandler(CustomerWithOrdersException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ResponseBody
+  public ErrorResource handleCustomerWithOrdersException(Exception ex) throws IOException {
+    return new ErrorResource(Instant.now().getEpochSecond(), "E004", ex.getMessage());
+  }
+
+  @ExceptionHandler(CustomerWithAccountsException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ResponseBody
+  public ErrorResource handleCustomerWithAccountsException(Exception ex) throws IOException {
+    return new ErrorResource(Instant.now().getEpochSecond(), "E005", ex.getMessage());
+  }
+
+  @ExceptionHandler(AccountWithTransactionsException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ResponseBody
+  public ErrorResource handleAccountWithTransactionsException(Exception ex) throws IOException {
+    return new ErrorResource(Instant.now().getEpochSecond(), "E006", ex.getMessage());
   }
 
 }
