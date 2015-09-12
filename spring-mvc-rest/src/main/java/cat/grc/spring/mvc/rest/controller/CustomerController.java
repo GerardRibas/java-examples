@@ -55,7 +55,7 @@ public class CustomerController {
     return new ResponseEntity<CustomerDto>(customerSaved, headers, HttpStatus.CREATED);
   }
 
-  @RequestMapping(value = "/{id}")
+  @RequestMapping("/{id}")
   public CustomerDto findCustomer(@PathVariable Long id) {
     LOGGER.debug("Finding customer by id={}", id);
     return service.findCustomerById(id);
@@ -74,7 +74,7 @@ public class CustomerController {
     service.deleteCustomer(id);
   }
 
-  @RequestMapping(value = "/{id}/accounts")
+  @RequestMapping("/{id}/accounts")
   public Collection<AccountDto> getAccountsOfACustomer(@PathVariable Long id,
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
     LOGGER.debug("Finding accounts for customerId={}", id);
@@ -93,7 +93,7 @@ public class CustomerController {
     return new ResponseEntity<AccountDto>(accountSaved, headers, HttpStatus.CREATED);
   }
 
-  @RequestMapping(value = "/{customerId}/accounts/{id}")
+  @RequestMapping("/{customerId}/accounts/{id}")
   public AccountDto findAccount(@PathVariable Long customerId, @PathVariable Long id) {
     LOGGER.debug("Finding account={} for customerId={}", id, customerId);
     return service.findAccountById(id);
