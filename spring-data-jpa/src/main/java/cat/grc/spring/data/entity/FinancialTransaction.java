@@ -133,8 +133,10 @@ public class FinancialTransaction implements Serializable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("id", id).add("account", account).add("invoice", invoice)
-        .add("type", type).add("transactionDate", transactionDate).add("amount", amount).toString();
+    return MoreObjects.toStringHelper(this).add("id", id).add("accountId", account == null ? null : account.getId())
+        .add("invoiceNumber", invoice == null ? null : invoice.getNumber())
+        .add("type", type == null ? null : type.getCode()).add("transactionDate", transactionDate).add("amount", amount)
+        .toString();
   }
 
 

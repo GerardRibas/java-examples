@@ -390,7 +390,6 @@ public class OrderServiceTest {
     service.deleteOrderItem(id);
 
     verify(orderItemRepository).findOne(eq(id));
-    verify(orderRepository).findOne(eq(order.getId()));
     verify(productService).findProductEntityById(eq(product.getId()));
     verify(orderRepository).save(eq(orderToSave));
   }

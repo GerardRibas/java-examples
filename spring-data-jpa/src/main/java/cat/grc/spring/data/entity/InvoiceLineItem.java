@@ -186,10 +186,11 @@ public class InvoiceLineItem implements Serializable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("id", id).add("item", item).add("invoice", invoice)
-        .add("product", product).add("productTitle", productTitle).add("quantity", quantity).add("price", price)
-        .add("derivedProductCost", derivedProductCost).add("derivedVatPayable", derivedVatPayable)
-        .add("derivedTotalCost", derivedTotalCost).toString();
+    return MoreObjects.toStringHelper(this).add("id", id).add("item", item)
+        .add("invoiceId", invoice == null ? null : invoice.getNumber())
+        .add("productId", product == null ? null : product.getId()).add("productTitle", productTitle)
+        .add("quantity", quantity).add("price", price).add("derivedProductCost", derivedProductCost)
+        .add("derivedVatPayable", derivedVatPayable).add("derivedTotalCost", derivedTotalCost).toString();
   }
 
 }
