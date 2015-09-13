@@ -27,7 +27,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import cat.grc.spring.data.dto.InvoiceDto;
 import cat.grc.spring.data.dto.OrderDto;
+import cat.grc.spring.data.entity.Invoice;
 import cat.grc.spring.data.entity.Order;
 import liquibase.integration.spring.SpringLiquibase;
 
@@ -128,6 +130,13 @@ public class EntityManagerConfiguration {
         skip().setItems(null);
       }
     });
+    mapper.addMappings(new PropertyMap<Invoice, InvoiceDto>() {
+      @Override
+      protected void configure() {
+        skip().setLines(null);
+      }
+    });
+
     return mapper;
   }
 

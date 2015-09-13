@@ -60,6 +60,11 @@
    <groupId>org.modelmapper</groupId>
    <artifactId>modelmapper</artifactId>
   </dependency>
+ <dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-annotations</artifactId>
+ </dependency>
+
 
   <!-- TEST DEPENDENCIES -->
   <dependency>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
@@ -21,6 +22,7 @@ public class InvoiceDto implements Serializable {
 
   private Date created;
 
+  @JsonManagedReference
   private Collection<InvoiceLineItemDto> lines;
 
   public InvoiceDto() {
