@@ -21,6 +21,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -131,13 +132,15 @@ public class OrderControllerTestIT {
   }
 
   @Test
+  @DirtiesContext
   public void testDeleteOrder() throws JsonParseException, JsonMappingException, IOException {
     testDeleteOrder("/orders/3", "3");
   }
 
   @Test
+  @DirtiesContext
   public void testDeleteOrderCustomersPath() throws JsonParseException, JsonMappingException, IOException {
-    testDeleteOrder("/customers/4/orders/4", "4");
+    testDeleteOrder("/customers/3/orders/3", "3");
   }
 
   @Test
