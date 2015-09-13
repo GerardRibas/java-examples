@@ -19,6 +19,7 @@ import cat.grc.spring.data.exception.OrderWithInvoicesException;
 import cat.grc.spring.data.exception.ProductCategoryHasProductsException;
 import cat.grc.spring.data.exception.ResourceAlreadyExistsException;
 import cat.grc.spring.data.exception.ResourceNotFoundException;
+import cat.grc.spring.data.exception.TransactionTypeHasTransactionsException;
 import cat.grc.spring.mvc.rest.ErrorResource;
 
 /**
@@ -75,6 +76,13 @@ public class ExceptionHandlerController {
   @ResponseBody
   public ErrorResource handleOrderWithInvoicesException(Exception ex) throws IOException {
     return new ErrorResource(Instant.now().getEpochSecond(), "E007", ex.getMessage());
+  }
+
+  @ExceptionHandler(TransactionTypeHasTransactionsException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ResponseBody
+  public ErrorResource handleTransactionTypeHasTransactionsException(Exception ex) throws IOException {
+    return new ErrorResource(Instant.now().getEpochSecond(), "E008", ex.getMessage());
   }
 
 }

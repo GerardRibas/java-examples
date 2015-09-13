@@ -85,7 +85,7 @@ public class OrderController {
       method = RequestMethod.PUT)
   public OrderItemDto updateOrderItem(@PathVariable Long orderId, @PathVariable Long id,
       @RequestBody OrderItemDto item) {
-    LOGGER.debug("Updating item={} for orderId={}", item, orderId);
+    LOGGER.debug("Updating item={} for orderId={} itemId={}", item, orderId, id);
     return service.updateOrderItem(item);
   }
 
