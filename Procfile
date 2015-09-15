@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT -jar spring-mvc-rest/target/spring-mvc-rest-1.0.0-SNAPSHOT.jar
