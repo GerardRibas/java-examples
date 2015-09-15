@@ -81,6 +81,26 @@ public class TransactionTypeControllerTestIT {
   }
 
   @Test
+  public void testFindTransactionType() {
+    ResponseEntity<TransactionTypeDto> response =
+        restTemplate.getForEntity(CONTROLLER_URL + "/1", TransactionTypeDto.class);
+    assertEquals("Expected OK Status", HttpStatus.OK, response.getStatusCode());
+    assertEquals("Expected transaction type 1", 1L, response.getBody().getCode().longValue());
+  }
+
+  @Test
+  public void testFindTransactionType_ResourceNotFoundException()
+      throws JsonParseException, JsonMappingException, IOException {
+    try {
+      restTemplate.getForEntity(CONTROLLER_URL + "/1", TransactionTypeDto.class);
+    } catch (HttpClientErrorException e) {
+      assertEquals("Expected NOT FOUND Status", HttpStatus.NOT_FOUND, e.getStatusCode());
+      ErrorResource error = objectMapper.readValue(e.getResponseBodyAsByteArray(), ErrorResource.class);
+      assertEquals("Expected the same error code", "E002", error.getCode());
+    }
+  }
+
+  @Test
   public void testUpdateTransactionType() {
     TransactionTypeDto type = new TransactionTypeDto(1L, "Credit Card");
     restTemplate.put(CONTROLLER_URL + "/1", type);
@@ -93,7 +113,7 @@ public class TransactionTypeControllerTestIT {
     try {
       restTemplate.put(CONTROLLER_URL + "/999", type);
     } catch (HttpClientErrorException e) {
-      assertEquals("Expected OK Status", HttpStatus.NOT_FOUND, e.getStatusCode());
+      assertEquals("Expected NOT FOUND Status", HttpStatus.NOT_FOUND, e.getStatusCode());
       ErrorResource error = objectMapper.readValue(e.getResponseBodyAsByteArray(), ErrorResource.class);
       assertEquals("Expected the same error code", "E002", error.getCode());
     }
@@ -123,13 +143,11 @@ public class TransactionTypeControllerTestIT {
     try {
       restTemplate.delete(CONTROLLER_URL + "/1");
     } catch (HttpClientErrorException e) {
-      assertEquals("Expected OK Status", HttpStatus.CONFLICT, e.getStatusCode());
+      assertEquals("Expected CONFLICT Status", HttpStatus.CONFLICT, e.getStatusCode());
       ErrorResource error = objectMapper.readValue(e.getResponseBodyAsByteArray(), ErrorResource.class);
       assertEquals("Expected the same error code", "E008", error.getCode());
       assertEquals("Expected the same message", "Transaction type 1 has transactions associated", error.getMessage());
     }
   }
-
-
 
 }
