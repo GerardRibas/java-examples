@@ -1,5 +1,6 @@
 Java Examples
 =====
+[![Build Status](https://travis-ci.org/GerardRibas/java-examples.svg?branch=develop)](https://travis-ci.org/GerardRibas/java-examples)
 
 This project contains a set of java examples of several frameworks such as Spring Framework, Spring Data etc...
 
