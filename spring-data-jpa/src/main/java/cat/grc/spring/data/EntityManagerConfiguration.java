@@ -3,6 +3,8 @@
  */
 package cat.grc.spring.data;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -27,7 +30,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import cat.grc.spring.data.dto.InvoiceDto;
 import cat.grc.spring.data.dto.OrderDto;
+import cat.grc.spring.data.entity.Invoice;
 import cat.grc.spring.data.entity.Order;
 import liquibase.integration.spring.SpringLiquibase;
 
@@ -39,7 +44,6 @@ import liquibase.integration.spring.SpringLiquibase;
 @EnableTransactionManagement
 @ComponentScan("cat.grc.spring.data")
 @EnableJpaRepositories(basePackages = "cat.grc.spring.data.repository")
-@PropertySource("classpath:application.properties")
 public class EntityManagerConfiguration {
 
   private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
@@ -60,6 +64,63 @@ public class EntityManagerConfiguration {
   @Autowired
   private Environment environment;
 
+  @Configuration
+  @Profile("default")
+  @PropertySource("classpath:application.properties")
+  static class Defaults {
+
+    @Autowired
+    private Environment environment;
+
+    @Bean
+    public DataSource dataSource() {
+      HikariConfig config = new HikariConfig();
+      config.setJdbcUrl(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
+      config.setUsername(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
+      config.setPassword(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
+      config.setDriverClassName(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
+      config.addDataSourceProperty("cachePrepStmts",
+          environment.getRequiredProperty(PROPERTY_NAME_DATABASE_CACHE_PREP_STMTS));
+      config.addDataSourceProperty("prepStmtCacheSize",
+          environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PREP_STMT_CACHE_SIZE));
+      config.addDataSourceProperty("prepStmtCacheSqlLimit",
+          environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PREP_STMT_CACHE_SQL_LIMIT));
+      return new HikariDataSource(config);
+    }
+
+  }
+
+  @Configuration
+  @Profile("heroku")
+  @PropertySource({"classpath:application.properties", "classpath:application-heroku.properties"})
+  static class Heroku {
+
+    @Autowired
+    private Environment environment;
+
+    @Bean
+    public DataSource herokuDataSource() throws IllegalStateException, URISyntaxException {
+      URI dbUri = new URI(environment.getRequiredProperty("DATABASE_URL"));
+      String username = dbUri.getUserInfo().split(":")[0];
+      String password = dbUri.getUserInfo().split(":")[1];
+      String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+      HikariConfig config = new HikariConfig();
+      config.setJdbcUrl(dbUrl);
+      config.setUsername(username);
+      config.setPassword(password);
+      config.setDriverClassName(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
+      config.addDataSourceProperty("cachePrepStmts",
+          environment.getRequiredProperty(PROPERTY_NAME_DATABASE_CACHE_PREP_STMTS));
+      config.addDataSourceProperty("prepStmtCacheSize",
+          environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PREP_STMT_CACHE_SIZE));
+      config.addDataSourceProperty("prepStmtCacheSqlLimit",
+          environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PREP_STMT_CACHE_SQL_LIMIT));
+      return new HikariDataSource(config);
+    }
+
+  }
+
   @Bean
   public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
     JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -73,23 +134,7 @@ public class EntityManagerConfiguration {
   }
 
   @Bean
-  public DataSource dataSource() {
-    HikariConfig config = new HikariConfig();
-    config.setJdbcUrl(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
-    config.setUsername(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
-    config.setPassword(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
-    config.setDriverClassName(environment.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
-    config.addDataSourceProperty("cachePrepStmts",
-        environment.getRequiredProperty(PROPERTY_NAME_DATABASE_CACHE_PREP_STMTS));
-    config.addDataSourceProperty("prepStmtCacheSize",
-        environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PREP_STMT_CACHE_SIZE));
-    config.addDataSourceProperty("prepStmtCacheSqlLimit",
-        environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PREP_STMT_CACHE_SQL_LIMIT));
-    return new HikariDataSource(config);
-  }
-
-  @Bean
-  public SpringLiquibase springLiquibase(DataSource dataSource) {
+  public SpringLiquibase liquibase(DataSource dataSource) {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
     liquibase.setContexts(environment.getRequiredProperty(PROPERTY_NAME_LIQUIBASE_CONTEXTS));
@@ -128,6 +173,13 @@ public class EntityManagerConfiguration {
         skip().setItems(null);
       }
     });
+    mapper.addMappings(new PropertyMap<Invoice, InvoiceDto>() {
+      @Override
+      protected void configure() {
+        skip().setLines(null);
+      }
+    });
+
     return mapper;
   }
 

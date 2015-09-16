@@ -3,7 +3,6 @@ ACCOUNT_ID|CUSTOMER_ID|DATE_ACCOUNT_OPENED|ACCOUNT_NAME
 2|2|2015-08-11|Donec tincidunt.
 3|3|2015-03-10|tincidunt adipiscing.
 4|4|2015-04-09|ornare, libero at auctor ullamcorper,
-5|5|2014-12-19|risus quis
 6|6|2014-12-09|risus. Nunc ac sem ut
 7|7|2014-09-06|velit. Cras lorem
 8|8|2015-02-03|egestas nunc sed libero.
@@ -98,4 +97,3 @@ ACCOUNT_ID|CUSTOMER_ID|DATE_ACCOUNT_OPENED|ACCOUNT_NAME
 97|97|2015-04-12|dui. Cum sociis
 98|98|2015-05-29|Nunc laoreet
 99|99|2014-10-20|eu
-100|100|2015-01-22|arcu ac orci. Ut semper

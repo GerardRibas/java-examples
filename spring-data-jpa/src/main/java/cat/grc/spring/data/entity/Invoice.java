@@ -119,8 +119,8 @@ public class Invoice implements Serializable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("number", number).add("order", order).add("created", created)
-        .add("transactions", transactions).add("lines", lines).toString();
+    return MoreObjects.toStringHelper(this).add("number", number).add("orderId", order == null ? null : order.getId())
+        .add("created", created).add("transactions", transactions).add("lines", lines).toString();
   }
 
 

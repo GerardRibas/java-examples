@@ -6,6 +6,7 @@ package cat.grc.spring.data.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
@@ -21,6 +22,7 @@ public class InvoiceLineItemDto implements Serializable {
 
   private Long itemId;
 
+  @JsonBackReference
   private InvoiceDto invoice;
 
   private Long productId;
@@ -36,6 +38,26 @@ public class InvoiceLineItemDto implements Serializable {
   private BigDecimal derivedVatPayable;
 
   private BigDecimal derivedTotalCost;
+
+  public InvoiceLineItemDto() {
+    // Default constructor
+  }
+
+  public InvoiceLineItemDto(Long id, Long itemId, InvoiceDto invoice, Long productId, String productTitle,
+      Long quantity, BigDecimal price, BigDecimal derivedProductCost, BigDecimal derivedVatPayable,
+      BigDecimal derivedTotalCost) {
+    super();
+    this.id = id;
+    this.itemId = itemId;
+    this.invoice = invoice;
+    this.productId = productId;
+    this.productTitle = productTitle;
+    this.quantity = quantity;
+    this.price = price;
+    this.derivedProductCost = derivedProductCost;
+    this.derivedVatPayable = derivedVatPayable;
+    this.derivedTotalCost = derivedTotalCost;
+  }
 
   public Long getId() {
     return id;

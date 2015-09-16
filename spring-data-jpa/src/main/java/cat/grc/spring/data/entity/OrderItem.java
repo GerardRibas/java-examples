@@ -115,7 +115,7 @@ public class OrderItem implements Serializable {
   @Override
   public final int hashCode() {
     return Objects.hashCode(id, order == null ? null : order.getId(), product == null ? null : product.getId(),
-        invoiceLineItem, quantity, cost);
+        invoiceLineItem == null ? null : invoiceLineItem.getId(), quantity, cost);
   }
 
   @Override
@@ -127,8 +127,9 @@ public class OrderItem implements Serializable {
               that.order == null ? null : that.order.getId())
           && Objects.equal(this.product == null ? null : product.getId(),
               that.product == null ? null : that.product.getId())
-          && Objects.equal(this.invoiceLineItem, that.invoiceLineItem) && Objects.equal(this.quantity, that.quantity)
-          && Objects.equal(this.cost, that.cost);
+          && Objects.equal(this.invoiceLineItem == null ? null : this.invoiceLineItem.getId(),
+              that.invoiceLineItem == null ? null : that.invoiceLineItem.getId())
+          && Objects.equal(this.quantity, that.quantity) && Objects.equal(this.cost, that.cost);
     }
     return false;
   }
@@ -138,8 +139,7 @@ public class OrderItem implements Serializable {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this).add("id", id).add("orderId", order == null ? null : order.getId())
-        .add("product", product).add("invoiceLineItem", invoiceLineItem).add("quantity", quantity).add("cost", cost)
-        .toString();
+        .add("product", product).add("quantity", quantity).add("cost", cost).toString();
   }
 
 }

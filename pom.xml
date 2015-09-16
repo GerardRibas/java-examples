@@ -28,10 +28,14 @@
   <org.modelmapper.version>0.7.5</org.modelmapper.version>
   <spring-test-dbunit.version>1.2.1</spring-test-dbunit.version>
   <org.dbunit.version>2.5.1</org.dbunit.version>
+  <io.springfox.version>2.2.2</io.springfox.version>
+  <org.postgresql.version>9.4-1202-jdbc42</org.postgresql.version>
+  <spring.version>4.2.1.RELEASE</spring.version>
  </properties>
 
  <modules>
   <module>spring-data-jpa</module>
+  <module>spring-mvc-rest</module>
  </modules>
 
  <parent>
@@ -42,6 +46,11 @@
 
  <dependencyManagement>
   <dependencies>
+   <dependency>
+    <groupId>cat.grc.examples</groupId>
+    <artifactId>spring-data-jpa</artifactId>
+    <version>${project.version}</version>
+   </dependency>
    <dependency>
     <groupId>ch.qos.logback</groupId>
     <artifactId>logback-classic</artifactId>
@@ -64,9 +73,26 @@
     <scope>compile</scope>
    </dependency>
    <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>${org.postgresql.version}</version>
+   </dependency>
+   <dependency>
     <groupId>org.modelmapper</groupId>
     <artifactId>modelmapper</artifactId>
     <version>${org.modelmapper.version}</version>
+   </dependency>
+
+   <!-- REST API DOCUMENTATION -->
+   <dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>${io.springfox.version}</version>
+   </dependency>
+   <dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>${io.springfox.version}</version>
    </dependency>
 
    <!-- TEST DEPENENCIES -->

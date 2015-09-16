@@ -208,7 +208,7 @@ public class OrderServiceImpl implements OrderService, OrderServicePkg {
       LOGGER.warn(msg);
       throw new ResourceNotFoundException(msg);
     }
-    Order order = findOrder(item.getId());
+    Order order = item.getOrder();
     boolean deleted = order.getItems().removeIf(itemToDelete -> itemToDelete.getId().equals(id));
     LOGGER.debug("Item with id={} deleted?{}", id, deleted);
     updateOrder(order);

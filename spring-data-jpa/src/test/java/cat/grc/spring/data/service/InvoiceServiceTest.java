@@ -130,19 +130,6 @@ public class InvoiceServiceTest {
     expectedDto.setNumber(savedInvoice.getNumber());
     expectedDto.setOrderId(savedInvoice.getOrder().getId());
 
-    InvoiceLineItemDto expectedInvoiceItem = new InvoiceLineItemDto();
-    expectedInvoiceItem.setId(1L);
-    expectedInvoiceItem.setDerivedProductCost(lineItem.getDerivedProductCost());
-    expectedInvoiceItem.setDerivedTotalCost(lineItem.getDerivedTotalCost());
-    expectedInvoiceItem.setDerivedVatPayable(lineItem.getDerivedVatPayable());
-    expectedInvoiceItem.setInvoice(expectedDto);
-    expectedInvoiceItem.setItemId(lineItem.getItem().getId());
-    expectedInvoiceItem.setPrice(lineItem.getPrice());
-    expectedInvoiceItem.setProductId(lineItem.getProduct().getId());
-    expectedInvoiceItem.setProductTitle(lineItem.getProductTitle());
-    expectedInvoiceItem.setQuantity(lineItem.getQuantity());
-    expectedDto.setLines(Arrays.asList(expectedInvoiceItem));
-
     when(orderService.findOrder(eq(orderId))).thenReturn(order);
     when(invoiceRepository.save(eq(invoice))).thenReturn(savedInvoice);
 
