@@ -30,6 +30,7 @@
   <org.dbunit.version>2.5.1</org.dbunit.version>
   <io.springfox.version>2.2.2</io.springfox.version>
   <org.postgresql.version>9.4-1202-jdbc42</org.postgresql.version>
+  <spring.version>4.2.1.RELEASE</spring.version>
  </properties>
 
  <modules>
