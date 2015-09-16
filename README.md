@@ -5,6 +5,7 @@ This project contains a set of java examples of several frameworks such as Sprin
 
 <h2>Contents</h2>
 - [spring-data-jpa](http://www.github.com/gerardribas/java-examples/spring-data-jpa)
+- [spring-mvc-rest](http://www.github.com/gerardribas/java-examples/spring-mvc-rest)
 
 <h2>Stay in touch</h2>
 
