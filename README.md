@@ -5,8 +5,8 @@ Java Examples
 This project contains a set of java examples of several frameworks such as Spring Framework, Spring Data etc...
 
 <h2>Contents</h2>
-- [spring-data-jpa](http://www.github.com/gerardribas/java-examples/spring-data-jpa)
-- [spring-mvc-rest](http://www.github.com/gerardribas/java-examples/spring-mvc-rest)
+- [spring-data-jpa](https://github.com/GerardRibas/java-examples/tree/develop/spring-data-jpa)
+- [spring-mvc-rest](https://github.com/GerardRibas/java-examples/tree/develop/spring-mvc-rest)
 
 <h2>Stay in touch</h2>
 
